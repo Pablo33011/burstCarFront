@@ -1,6 +1,5 @@
 import { Component, AfterViewInit } from '@angular/core';
-import * as mapboxgl from 'mapbox-gl';
-import { environment } from 'src/environment/environment';
+import * as L from 'leaflet';
 import { Geolocation } from '@capacitor/geolocation';
 
 @Component({
@@ -10,28 +9,23 @@ import { Geolocation } from '@capacitor/geolocation';
 })
 export class MapaPrestador implements AfterViewInit {
 
-  mapa!: mapboxgl.Map;
+  private mapa!: L.Map;
 
   constructor() {}
 
   async ngAfterViewInit() {
-    (mapboxgl as any).accessToken = environment.mapboxAccessToken;
+    const coords = await this.getUserLocation();
 
-    const coordenadas = await this.getUserLocation();
+    this.mapa = L.map('mapa').setView([coords.latitude, coords.longitude], 13);
 
-    this.mapa = new mapboxgl.Map({
-      container: 'mapa',
-      style: 'mapbox://styles/mapbox/streets-v11',
-      center: [coordenadas.longitude, coordenadas.latitude],
-      zoom: 14
-    });
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(this.mapa);
 
-    this.mapa.addControl(new mapboxgl.NavigationControl());
-
-    new mapboxgl.Marker()
-      .setLngLat([coordenadas.longitude, coordenadas.latitude])
-      .setPopup(new mapboxgl.Popup().setText("Estás aquí"))
-      .addTo(this.mapa);
+    L.marker([coords.latitude, coords.longitude])
+      .addTo(this.mapa)
+      .bindPopup('Estás aquí')
+      .openPopup();
   }
 
   async getUserLocation(): Promise<{ latitude: number, longitude: number }> {

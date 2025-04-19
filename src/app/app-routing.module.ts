@@ -5,6 +5,7 @@ const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', loadChildren: () => import('./pages/login/login.module').then(m => m.LoginPageModule) },
   { path: 'register', loadChildren: () => import('./pages/register/register.module').then(m => m.RegisterPageModule) },
+  { path: 'prestador/ubicacion', loadChildren: () => import('./pages/ubicacion-prestador/ubicacion-prestador.module').then(m => m.UbicacionPrestadorModule) },
 ];
 
 @NgModule({ imports: [RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })], exports: [RouterModule] })

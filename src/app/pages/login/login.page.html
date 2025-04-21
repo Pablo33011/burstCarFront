@@ -1,9 +1,39 @@
 <ion-content class="login-background">
   <div class="login-container">
     <h2>Login</h2>
-    <ion-input placeholder="Usuario" fill="outline" class="login-input"></ion-input>
-    <ion-input placeholder="Contraseña" type="password" fill="outline" class="login-input"></ion-input>
-    <p class="redirect-text" (click)="goToRegister()">¿Desea crear una cuenta nueva?</p>
-    <ion-button expand="block" color="dark" class="login-button">Iniciar</ion-button>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <ion-input
+        placeholder="Usuario"
+        fill="outline"
+        class="login-input"
+        formControlName="usuario"
+      ></ion-input>
+
+      <ion-input
+        placeholder="Contraseña"
+        type="password"
+        fill="outline"
+        class="login-input"
+        formControlName="contrasena"
+      ></ion-input>
+
+      <ion-text color="danger" *ngIf="errorMessage">
+        <p>{{ errorMessage }}</p>
+      </ion-text>
+
+      <ion-button
+        expand="block"
+        color="dark"
+        class="login-button"
+        type="submit"
+      >
+        Iniciar
+      </ion-button>
+    </form>
+
+    <p class="redirect-text" (click)="goToRegister()">
+      ¿Desea crear una cuenta nueva?
+    </p>
   </div>
 </ion-content>

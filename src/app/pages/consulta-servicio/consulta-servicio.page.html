@@ -1,0 +1,39 @@
+<ion-header class="custom-header">
+  <ion-toolbar color="primary">
+    <ion-title class="custom-header-title">Servicios disponibles</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="consulta-background">
+  <ion-list *ngFor="let servicio of servicios" class="consulta-container">
+    <ion-card class="servicio-card">
+
+      <ion-card-header class="card-header">
+        <ion-card-title><strong>Descripción:</strong> {{ servicio.descripcion }}</ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        <p><strong>Estado del servicio:</strong> {{ servicio.estadoServicio }}</p>
+        <p><strong>Solicitante:</strong> {{ servicio.nombreSolicitante }} ({{ servicio.identificacionSolicitante }})</p>
+        <p><strong>Tipo de Servicio:</strong> {{ servicio.nombreTipoServicio }}</p>
+        <p><strong>Destinatario:</strong> {{ servicio.nombreDestinario }} ({{ servicio.identificaionDestinario }})</p>
+        <p><strong>Costo Inicial:</strong> {{ servicio.costoInicialSolicitante | currency:servicio.monedaNombre }}</p>
+        <p><strong>Fecha de creación:</strong> {{ servicio.fechaCreacion | date:'medium' }}</p>
+
+        <div class="map-buttons">
+          <ion-button expand="block" fill="solid" color="success" class="map-button" (click)="verUbicacion(servicio)">
+            Ver ubicación
+          </ion-button>
+          
+          <ion-button expand="block" fill="solid" color="tertiary" class="map-button" (click)="verDestino(servicio)">
+            Ver destino
+          </ion-button>
+          <ion-button expand="block" fill="solid" color="tertiary" class="map-button" (click)="verPaquetes(servicio)">
+            Ver paquetes asociados
+          </ion-button>
+        </div>
+      </ion-card-content>
+
+    </ion-card>
+  </ion-list>
+</ion-content>

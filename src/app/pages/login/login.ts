@@ -1,13 +1,12 @@
-export class Login implements Respuesta
+export class Login
 {
-    nombre:String = "";
+    usuario:String = "";
     contrasena:String = "";
 
   constructor()
   {
 
   }
-    valor!: String;
 }
 
 export interface Respuesta {

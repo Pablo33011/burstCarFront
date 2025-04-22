@@ -18,6 +18,17 @@
         formControlName="contrasena"
       ></ion-input>
 
+      <ion-select
+      interface="action-sheet"
+      placeholder="Tipo de usuario"
+      class="login-input"
+      formControlName="tipoUsuario"
+    >
+      <ion-select-option value="solicitante">Solicitante de servicio</ion-select-option>
+      <ion-select-option value="prestador">Prestador de servicio</ion-select-option>
+    </ion-select>
+    
+
       <ion-text color="danger" *ngIf="errorMessage">
         <p>{{ errorMessage }}</p>
       </ion-text>
@@ -26,10 +37,16 @@
         expand="block"
         color="dark"
         class="login-button"
-        type="submit"
-      >
+        type="submit">
         Iniciar
       </ion-button>
+
+      <ion-button
+      expand="block"
+      color="danger"
+      (click)="logout()">
+      Cerrar sesión
+    </ion-button>
     </form>
 
     <p class="redirect-text" (click)="goToRegister()">

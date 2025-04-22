@@ -1,0 +1,32 @@
+<ion-header class="custom-header">
+    <ion-toolbar color="primary">
+      <ion-title class="custom-header-title">Paquetes asociados al servicio</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  
+  <ion-content class="consulta-background">
+    <ion-list *ngFor="let paquete of paquetes" class="consulta-container">
+      <ion-card class="servicio-card">
+  
+        <ion-card-header class="card-header">
+          <ion-card-title><strong>Descripción del paquete:</strong> {{ paquete.descripcion }}</ion-card-title>
+        </ion-card-header>
+  
+        <ion-card-content>
+          <p><strong>Tipo de paquete:</strong> {{ paquete.tipoPaquete.nombre }}</p>
+          <p><strong>Descripción del tipo:</strong> {{ paquete.tipoPaquete.descripcion }}</p>
+  
+          <p><strong>Contenido:</strong> {{ paquete.contenido.descripcion }}</p>
+          <p><strong>¿Es frágil?:</strong> {{ paquete.contenido.fragil ? 'Sí' : 'No' }}</p>
+          <p><strong>Valor aproximado:</strong> 
+            {{ paquete.contenido.valorAproximado | currency:paquete.contenido.monedaPaquete.codigoMoneda }}
+          </p>
+          <p><strong>Moneda:</strong> {{ paquete.contenido.monedaPaquete.nombreMoneda }} 
+            ({{ paquete.contenido.monedaPaquete.codigoMoneda }})
+          </p>
+        </ion-card-content>
+  
+      </ion-card>
+    </ion-list>
+  </ion-content>
+  

@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LoginServicio } from '../login/login.servicio';
-import { Storage } from '@ionic/storage-angular';
 import { Login } from './login';
 import { StorageService } from 'src/app/shared/storage.service';
 
@@ -54,7 +53,7 @@ export class LoginPage {
         if (payload.rol === 'prestador') {
           this.router.navigateByUrl('/servicio/todos');
         } else if (payload.rol === 'solicitante') {
-          //this.router.navigateByUrl('/solicitante-dashboard');
+          this.router.navigateByUrl('/servicio/todos');
         } else {
           this.errorMessage = 'Rol desconocido.';
         }

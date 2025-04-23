@@ -8,6 +8,9 @@ const routes: Routes = [
   { path: 'prestador/ubicacion', loadChildren: () => import('./pages/ubicacion-prestador/ubicacion-prestador.module').then(m => m.UbicacionPrestadorModule) },
   { path: 'servicio/todos', loadChildren: () => import('./pages/consulta-servicio/consulta-servicio.module').then(m => m.ConsultaServicioPageModule) },
   { path: 'paquete/servicio/:id/informacion', loadChildren: () => import('./pages/paquete/paquete.module').then(m => m.PaqueteServicioPageModule) },
+  { path: 'paquete/peso/:id/informacion', loadChildren: () => import('./pages/peso/peso.module').then(m => m.PesoContenidoPageModule) },
+  { path: 'paquete/nuevo/:id', loadChildren: () => import('./pages/paquete-registro/paquete-registro.module').then(m => m.PaqueteRegistroServicioPageModule) },
+  { path: 'servicio/nuevo', loadChildren: () => import('./pages/paquete-registro/paquete-registro.module').then(m => m.PaqueteRegistroServicioPageModule) },
 ];
 
 @NgModule({ imports: [RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })], exports: [RouterModule] })

@@ -1,0 +1,38 @@
+<ion-header class="custom-header">
+    <ion-toolbar color="primary">
+      <ion-title class="custom-header-title">Información del Peso del Paquete</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  
+  <ion-content class="consulta-background">
+
+    <ng-container *ngIf="peso">
+        <div class="consulta-container"> 
+          <ion-card class="servicio-card"> 
+            <ion-card-header class="card-header">
+              <ion-card-title>
+                <strong>Peso:</strong> {{ peso.valor }} {{ peso.medidaPaquete.abreviaturaMedida }}
+              </ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <p><strong>Unidad completa:</strong> {{ peso.medidaPaquete.nombreMedida }}</p>
+              <p><strong>Tipo de unidad métrica:</strong> {{ peso.medidaPaquete.nombreTipoUnidadMetrica }}</p>
+            
+            </ion-card-content>
+
+            <ion-button *ngIf="rolUsuario === 'solicitante'" expand="block" fill="solid" color="warning" class="map-button-light"
+            (click)="actualizarPeso(peso)">
+            Actualizar
+          </ion-button>
+
+          </ion-card>
+        </div>
+      </ng-container>
+  
+    <ng-template #cargando>
+      <div style="display: flex; justify-content: center; margin-top: 40px;">
+        <ion-spinner name="crescent"></ion-spinner>
+      </div>
+    </ng-template>
+  </ion-content>
+  

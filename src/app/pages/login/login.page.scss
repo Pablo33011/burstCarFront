@@ -1,5 +1,55 @@
-.login-background{--background:#2f4f39;display:flex;justify-content:center;align-items:center;}
-.login-container{width:80%;margin:auto;padding-top:15vh;text-align:center;color:#232020;}
-.login-input{margin:15px 0;--background:#f3f3e4;--color:#000;--border-radius:5px;}
-.login-button{--background:#6c8f6d;font-weight:bold;margin-top:20px;}
-.redirect-text{margin:20px 0;text-decoration:underline;cursor:pointer;color:#f0f0f0;}
+.login-background {
+    --background: #2f4f39;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .login-decor {
+    position: absolute;
+    top: 32%;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0.08;
+    z-index: 0;
+  
+    img {
+        width: 70vw;  
+        max-width: 500px;
+        height: auto;
+        pointer-events: none;
+        user-select: none;
+    }
+  }
+  
+  .login-container {
+    width: 80%;
+    margin: auto;
+    padding-top: 15vh;
+    text-align: center;
+    color: #232020;
+    z-index: 1; // Asegura que esté sobre el decorativo
+    position: relative;
+  }
+  
+  .login-input {
+    margin: 15px 0;
+    --background: #f3f3e4;
+    --color: #000;
+    --border-radius: 5px;
+  }
+  
+  .login-button {
+    --background: #6c8f6d;
+    font-weight: bold;
+    margin-top: 20px;
+  }
+  
+  .redirect-text {
+    margin: 20px 0;
+    text-decoration: underline;
+    cursor: pointer;
+    color: #f0f0f0;
+  }  

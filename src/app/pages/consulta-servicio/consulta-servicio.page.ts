@@ -11,8 +11,10 @@ import { StorageService } from 'src/app/shared/storage.service';
 export class ConsultaServicioPage{
   servicios: any[] = [];
   rolUsuario: string = '';
-  paginaActual = 1;
+  paginaActual = 0;
   serviciosPorPagina = 3;
+  totalPaginas = 0;
+  identificacionUsuario: string = '';
 
   constructor(private servicioConsulta: ServicioConsulta, 
     private router: Router, 
@@ -30,10 +32,15 @@ export class ConsultaServicioPage{
     this.cargarServicios();          
   }
 
-  async cargarServicios() { 
-    this.servicioConsulta.servicioTodo().subscribe({
+  crearServicio() {
+    this.router.navigateByUrl(`/servicio/nuevo`);
+  }
+
+  cargarServicios() { 
+    this.servicioConsulta.servicioTodoPaginado(this.paginaActual, this.serviciosPorPagina).subscribe({
       next: (res) => {
-        this.servicios = res;
+        this.servicios = res.contenidoPagina;
+        this.totalPaginas = res.totalPaginas;
       },
       error: (i) => {
         console.error("Error al cargar los servicios:", i);
@@ -44,10 +51,16 @@ export class ConsultaServicioPage{
   }
 
   verPaquetes(servicio: any) {
-    const idPaquete = servicio.idServicio;
-    console.log("Navegando a:", `/paquete/${idPaquete}/informacion`);
-    this.router.navigateByUrl(`/paquete/servicio/${idPaquete}/informacion`);
-    }
+    const idServicio = servicio.idServicio;
+    console.log("Navegando a:", `/paquete/${idServicio}/informacion`);
+    this.router.navigateByUrl(`/paquete/servicio/${idServicio}/informacion`);
+  }
+  
+  verOfertas(servicio: any) {
+    const idServicio = servicio.idServicio;
+    console.log("Navegando a:", `/servicio/oferta/todos/${idServicio}`);
+    this.router.navigateByUrl(`/servicio/oferta/todos/${idServicio}`);
+  }  
 
     async obtenerRol() {
       const token = await this.storageServicio.obtener('token');
@@ -58,25 +71,17 @@ export class ConsultaServicioPage{
       }
     }
   
-  
-    get totalPaginas(): number {
-      return Math.ceil(this.servicios.length / this.serviciosPorPagina);
-    }
-    
-    obtenerServiciosPaginaActual() {
-      const inicio = (this.paginaActual - 1) * this.serviciosPorPagina;
-      return this.servicios.slice(inicio, inicio + this.serviciosPorPagina);
-    }
-  
     siguientePagina() {
-      if ((this.paginaActual * this.serviciosPorPagina) < this.servicios.length) {
+      if (this.paginaActual + 1 < this.totalPaginas) {
         this.paginaActual++;
+        this.cargarServicios();
       }
     }
   
     anteriorPagina() {
-      if (this.paginaActual > 1) {
+      if (this.paginaActual > 0) {
         this.paginaActual--;
+        this.cargarServicios();
       }
     }
 

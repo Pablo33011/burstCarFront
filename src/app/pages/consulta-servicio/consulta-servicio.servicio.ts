@@ -14,8 +14,9 @@ export class ServicioConsulta {
   constructor(private http: HttpClient) { }
 
 
-  servicioTodo(): Observable<Servicio[]> {
-    return this.http.get<Servicio[]>(urlApiConsultaServicioTodos);
+  servicioTodoPaginado(pagina: number, cantidad: number): Observable<any> {
+    const url = `${urlApiConsultaServicioTodos}?pagina=${pagina}&cantidad=${cantidad}`;
+    return this.http.get<any>(url);
   }
 
 }

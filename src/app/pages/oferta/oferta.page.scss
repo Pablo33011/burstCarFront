@@ -1,0 +1,62 @@
+.consulta-background {
+  --background: #1e3d2f;
+}
+
+.consulta-container {
+  width: 90%;
+  margin: auto;
+  padding-top: 4vh;
+}
+
+.servicio-card {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  margin-bottom: 24px;
+  color: #232020;
+}
+
+.card-header {
+  background-color: #6c8f6d;
+  color: white;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+ion-card p {
+  margin-bottom: 8px;
+  font-size: 15px;
+  color: #333;
+}
+
+.custom-header {
+  ion-toolbar {
+    --background: #2f4f39;
+    --color: white;
+    text-align: center;
+  }
+}
+
+.custom-header-title {
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+
+.map-button-light {
+  --background: #f3f3e4;
+  --color: #232020;
+  --border-radius: 8px;
+  font-weight: bold;
+}
+
+.paginacion-bloque {
+  margin: 24px auto;
+}
+
+.pagina-indicador {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #f3f3e4; 
+  text-align: center;
+}

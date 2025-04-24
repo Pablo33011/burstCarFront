@@ -22,6 +22,7 @@
             ],
             "styles": [
               "src/global.scss",
+              "node_modules/mapbox-gl/dist/mapbox-gl.css",
               "node_modules/leaflet/dist/leaflet.css"
             ],
             "scripts": []

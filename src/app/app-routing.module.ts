@@ -10,7 +10,8 @@ const routes: Routes = [
   { path: 'paquete/servicio/:id/informacion', loadChildren: () => import('./pages/paquete/paquete.module').then(m => m.PaqueteServicioPageModule) },
   { path: 'paquete/peso/:id/informacion', loadChildren: () => import('./pages/peso/peso.module').then(m => m.PesoContenidoPageModule) },
   { path: 'paquete/nuevo/:id', loadChildren: () => import('./pages/paquete-registro/paquete-registro.module').then(m => m.PaqueteRegistroServicioPageModule) },
-  { path: 'servicio/nuevo', loadChildren: () => import('./pages/paquete-registro/paquete-registro.module').then(m => m.PaqueteRegistroServicioPageModule) },
+  { path: 'servicio/nuevo', loadChildren: () => import('./pages/servicio-registro/servicio-registro.module').then(m => m.RegistraServicioPageModule) },
+  { path: 'servicio/oferta/todos/:id', loadChildren: () => import('./pages/oferta/oferta.module').then(m => m.OfertaServicioPageModule) },
 ];
 
 @NgModule({ imports: [RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })], exports: [RouterModule] })

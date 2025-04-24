@@ -10,7 +10,7 @@
       Crear nuevo servicio
     </ion-button>
   </div>
-  <ion-list *ngFor="let servicio of obtenerServiciosPaginaActual()" class="consulta-container">
+  <ion-list *ngFor="let servicio of servicios " class="consulta-container">
     <ion-card class="servicio-card">
 
       <ion-card-header class="card-header">
@@ -32,6 +32,9 @@
           <ion-button expand="block" fill="solid" color="tertiary" class="map-button-light" (click)="verPaquetes(servicio)">
             Ver paquetes asociados
           </ion-button>
+          <ion-button expand="block" fill="solid" color="tertiary" class="map-button-light" (click)="verOfertas(servicio)">
+            Ver ofertas
+          </ion-button>
           <ion-button *ngIf="rolUsuario === 'solicitante'" expand="block" fill="solid" color="warning" class="map-button-light" (click)="actualizarServicio(servicio)">
             Actualizar
           </ion-button>
@@ -41,25 +44,26 @@
     </ion-card>
   </ion-list>
 
-  <div class="consulta-container paginacion-bloque" *ngIf="servicios.length > 0">
+  <div class="consulta-container paginacion-bloque" *ngIf="totalPaginas > 1">
     <ion-grid>
       <ion-row class="ion-align-items-center ion-justify-content-between">
         <ion-col size="4" class="ion-text-start">
-          <ion-button expand="block" fill="outline" class="map-button-light" (click)="anteriorPagina()" [disabled]="paginaActual === 1">
+          <ion-button expand="block" fill="outline" class="map-button-light"
+                      (click)="anteriorPagina()" [disabled]="paginaActual === 0">
             Anterior
           </ion-button>
         </ion-col>
-  
+
         <ion-col size="4" class="ion-text-center">
-          <p class="pagina-indicador">Página {{ paginaActual }} de {{ totalPaginas }}</p>
+          <p class="pagina-indicador">Página {{ paginaActual + 1 }} de {{ totalPaginas }}</p>
         </ion-col>
-  
+
         <ion-col size="4" class="ion-text-end">
-          <ion-button expand="block" fill="outline" (click)="siguientePagina()" [disabled]="paginaActual * serviciosPorPagina >= servicios.length">
+          <ion-button expand="block" fill="outline"
+                      (click)="siguientePagina()" [disabled]="paginaActual + 1 >= totalPaginas">
             Siguiente
           </ion-button>
         </ion-col>
-  
       </ion-row>
     </ion-grid>
   </div>

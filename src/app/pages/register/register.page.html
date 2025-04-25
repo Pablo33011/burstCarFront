@@ -1,17 +1,52 @@
-<ion-content class="register-background">
-  <div class="register-container">
-    <h2>Registro</h2>
-    <ion-input placeholder="Nombre completo" fill="outline" class="register-input"></ion-input>
-    <ion-input placeholder="Correo electrónico" type="email" fill="outline" class="register-input"></ion-input>
-    <ion-input placeholder="Contraseña" type="password" fill="outline" class="register-input"></ion-input>
-    <ion-input placeholder="Confirmar contraseña" type="password" fill="outline" class="register-input"></ion-input>
-    <ion-select interface="action-sheet" placeholder="Tipo de usuario" class="register-input">
-      <ion-select-option value="solicitante">Solicitante de servicio</ion-select-option>
-      <ion-select-option value="prestador">Prestador de servicio</ion-select-option>
+<ion-header class="custom-header">
+  <ion-toolbar color="primary">
+    <ion-title class="custom-header-title">Crear cuenta</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="login-background">
+  <div class="login-decor">
+    <img src="../../../assets/img/undraw_vintage_q09n.svg" alt="decoración" />
+  </div>
+
+  <div class="login-container">
+    <form [formGroup]="registroForm" (ngSubmit)="registrar()">
+      <ion-input formControlName="nombre" placeholder="Nombre completo" fill="outline" class="login-input"></ion-input>
+      <ion-input formControlName="usuario" placeholder="Usuario" fill="outline" class="login-input"></ion-input>
+      <ion-input formControlName="contrasena" type="password" placeholder="Contraseña" fill="outline" class="login-input"></ion-input>
+      <ion-input formControlName="numeroTelefonico" type="number" placeholder="Teléfono" fill="outline" class="login-input"></ion-input>
+      <ion-input formControlName="categoriaIdentificador" placeholder="Tipo de ID (ej: CC)" fill="outline" class="login-input"></ion-input>
+      <ion-input formControlName="numeroIdentificacion" type="text" placeholder="Número de identificación" fill="outline" class="login-input"></ion-input>
+
+      <ion-select
+      interface="action-sheet"
+      placeholder="Tipo de usuario"
+      class="login-input"
+      formControlName="tipoUsuario"
+    >
+      <ion-select-option value="solicitante">Solicitante</ion-select-option>
+      <ion-select-option value="prestador">Prestador</ion-select-option>
     </ion-select>
-    <p class="bienvenido-text">Bienvenido</p>
-    <ion-button expand="block" color="dark" class="register-button" (click)="goToMapaPrestador()">
-      Crear
-    </ion-button>
+
+    <div *ngIf="esPrestador() && registroForm.get('ubicacion')" [formGroup]="registroForm.get('ubicacion')">
+      <h3>Ubicación del prestador</h3>
+  
+      <ion-input formControlName="numeroVia" placeholder="Número de vía" fill="outline" class="login-input"></ion-input>
+      <ion-input formControlName="direccion" placeholder="Dirección" fill="outline" class="login-input"></ion-input>
+      <ion-input type="number" formControlName="latitud" placeholder="Latitud" fill="outline" class="login-input"></ion-input>
+      <ion-input type="number" formControlName="longitud" placeholder="Longitud" fill="outline" class="login-input"></ion-input>
+      <ion-input formControlName="nombrePais" placeholder="Nombre del país" fill="outline" class="login-input"></ion-input>
+      <ion-input formControlName="detalleAdicional" placeholder="Detalle adicional" fill="outline" class="login-input"></ion-input>
+      <ion-input formControlName="nombreDepartamento" placeholder="Nombre del departamento" fill="outline" class="login-input"></ion-input>
+      <ion-input formControlName="nombreCiudad" placeholder="Nombre de la ciudad" fill="outline" class="login-input"></ion-input>
+      <ion-input formControlName="nombreCorregimiento" placeholder="Nombre del corregimiento" fill="outline" class="login-input"></ion-input>
+      <ion-input formControlName="nombreVia" placeholder="Nombre de la vía" fill="outline" class="login-input"></ion-input>
+      <app-mapa-selector [formGroup]="registroForm.get('ubicacion')"></app-mapa-selector>
+    </div>
+
+      <ion-button expand="block" type="submit" color="dark" class="login-button">
+        Crear cuenta
+      </ion-button>
+    </form>
   </div>
 </ion-content>

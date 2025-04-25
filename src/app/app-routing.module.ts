@@ -12,6 +12,8 @@ const routes: Routes = [
   { path: 'paquete/nuevo/:id', loadChildren: () => import('./pages/paquete-registro/paquete-registro.module').then(m => m.PaqueteRegistroServicioPageModule) },
   { path: 'servicio/nuevo', loadChildren: () => import('./pages/servicio-registro/servicio-registro.module').then(m => m.RegistraServicioPageModule) },
   { path: 'servicio/oferta/todos/:id', loadChildren: () => import('./pages/oferta/oferta.module').then(m => m.OfertaServicioPageModule) },
+  { path: 'oferta/nueva/servicio/:id', loadChildren: () => import('./pages/oferta-registro/oferta-registro.module').then(m => m.OfertaRegistroServicioPageModule) },
+  { path: 'prestador/:id', loadChildren: () => import('./pages/prestador/prestador.module').then(m => m.PrestadorServicioPageModule) },
 ];
 
 @NgModule({ imports: [RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })], exports: [RouterModule] })

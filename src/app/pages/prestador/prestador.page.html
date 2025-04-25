@@ -1,0 +1,51 @@
+<ion-header class="custom-header">
+    <ion-toolbar color="primary">
+      <ion-title class="custom-header-title">Información del Prestador</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  
+  <ion-content class="consulta-background">
+    <div class="consulta-container">
+      <ion-card class="servicio-card">
+        <ion-card-header class="card-header">
+          <ion-card-title>{{ prestador?.nombre }}</ion-card-title>
+        </ion-card-header>
+  
+        <ion-card-content>
+          <p><strong>Identificación:</strong> {{ prestador?.numeroIdentificacion }}</p>
+          <p><strong>Teléfono:</strong> {{ prestador?.numeroTelefonico }}</p>
+          <p><strong>Categoría ID:</strong> {{ prestador?.categoriaIdentificacion }}</p>
+          <p><strong>Dirección:</strong> {{ prestador?.ubicacionPrestador?.viaPrestador?.nombre }}
+            {{ prestador?.ubicacionPrestador?.numeroVia }},
+            {{ prestador?.ubicacionPrestador?.direccion }}</p>
+          <p><strong>Ciudad:</strong> {{ prestador?.ubicacionPrestador?.delimitacionPrestador?.nombreCiudad }}</p>
+          <p><strong>Departamento:</strong> {{ prestador?.ubicacionPrestador?.delimitacionPrestador?.nombreDepartamento }}</p>
+          <p><strong>País:</strong> {{ prestador?.ubicacionPrestador?.delimitacionPrestador?.nombrePais }}</p>
+  
+          <h3>Ubicación en el mapa</h3>
+          <app-mapa-selector
+          *ngIf="ubicacionForm"
+          [formGroup]="ubicacionForm"
+          [soloLectura]="true"
+          #mapaConsulta>
+        </app-mapa-selector>        
+  
+        <h3 *ngIf="prestador?.calificaciones?.length">Calificaciones</h3>
+        <div *ngIf="prestador?.calificaciones?.length === 0">
+          <p>Este prestador no tiene calificaciones aún.</p>
+        </div>
+        
+        <ul *ngIf="prestador?.calificaciones?.length">
+          <li *ngFor="let cal of prestador.calificaciones">
+            <div class="estrellas-container">
+              <div class="estrellas-fondo">★★★★★</div>
+              <div class="estrellas-frente" [style.width]="calcularPorcentaje(cal.valor)">★★★★★</div>
+            </div>
+            - {{ cal.comentario }}
+          </li>
+        </ul>
+                        
+        </ion-card-content>
+      </ion-card>
+    </div>
+  </ion-content>  

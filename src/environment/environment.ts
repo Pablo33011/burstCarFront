@@ -1,6 +1,6 @@
 export const environment = {
     production: false,
-    mapboxAccessToken: ''
+    mapboxAccessToken: 'pk.eyJ1IjoicHJveWVjdG8yNSIsImEiOiJjbTl2bTd5NWUwbzdnMmlwczVkYzB4ZTQ0In0.LNXhyIZXk1845kMFcGG0BA'
   };
 
 export const endpointEnviroment = {
@@ -15,5 +15,10 @@ export const endpointEnviroment = {
   peticionRegistrarPaquete: 'http://localhost:8889/paquete/nuevo',
   peticionRegistrarUbicacion: 'http://localhost:8889/servicio/ubicacion/nuevo',
   peticionRegistrarDestino: 'http://localhost:8889/servicio/destino/nuevo',
-  peticionRegistrarServicio: 'http://localhost:8889/servicio/nuevo'
+  peticionRegistrarServicio: 'http://localhost:8889/servicio/nuevo',
+  peticionRegistrarOferta: 'http://localhost:8889/servicio/oferta/nueva',
+  peticionRegistrarSolicitante: 'http://localhost:8889/solicitante/nuevo',
+  peticionRegistrarPrestador: 'http://localhost:8889/prestador/nuevo',
+  peticionRegistrarUbicacionPrestador: 'http://localhost:8889/prestador/ubicacion/nuevo',
+  peticionConsultaPrestador: 'http://localhost:8889/prestador'
 }  

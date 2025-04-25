@@ -58,7 +58,13 @@ export class OfertaConsultaPage implements OnInit{
   }
 
   crearOferta() {
-    //this.router.navigateByUrl(`/servicio/nuevo`);
+    this.router.navigateByUrl(`oferta/nueva/servicio/${this.idServicio}`);
+  }
+
+  verPrestador(oferta: any) {
+    const idPrestador = oferta.prestadorServicio;
+    console.log("Navegando a:", `/prestador/${idPrestador}`);
+    this.router.navigateByUrl(`/paquete/peso/${idPrestador}`);
   }
 
 

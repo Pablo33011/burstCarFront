@@ -1,0 +1,75 @@
+<ion-header class="custom-header">
+    <ion-toolbar color="primary">
+      <ion-title class="custom-header-title">Registrar nueva oferta</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  
+  <ion-content class="consulta-background">
+    <form [formGroup]="ofertaForm" (ngSubmit)="registrarOferta()">
+      <ion-card class="servicio-card consulta-container">
+        <ion-card-content>
+  
+          <ion-item>
+            <ion-label position="stacked">Descripción</ion-label>
+            <ion-input formControlName="descripcion"></ion-input>
+          </ion-item>
+  
+          <ion-item>
+            <ion-label position="stacked">Costo</ion-label>
+            <ion-input type="number" formControlName="costo"></ion-input>
+          </ion-item>
+  
+          <ion-item>
+            <ion-label position="stacked">Moneda</ion-label>
+            <ion-input formControlName="monedaServicio"></ion-input>
+          </ion-item>
+          
+          <ion-item>
+            <ion-label position="stacked">Fecha de inicio</ion-label>
+            <ion-datetime
+              formControlName="fechaInicio"
+              presentation="date-time"
+              display-format="DD/MM/YYYY HH:mm"
+              picker-format="DD/MM/YYYY HH:mm"
+              hour-cycle="h23"
+              color="tertiary"
+              prefer-wheel="false"
+            ></ion-datetime>
+          </ion-item>
+          
+          <ion-item>
+            <ion-label position="stacked">Fecha de fin</ion-label>
+            <ion-datetime
+              formControlName="fechaFin"
+              presentation="date-time"
+              display-format="DD/MM/YYYY HH:mm"
+              picker-format="DD/MM/YYYY HH:mm"
+              hour-cycle="h23"
+              color="tertiary"
+              prefer-wheel="false"
+            ></ion-datetime>
+          </ion-item>                    
+  
+          <ion-item>
+            <ion-label position="stacked">Estado de la oferta</ion-label>
+            <ion-input formControlName="estadoOferta" readonly></ion-input>
+          </ion-item>
+  
+          <ion-item>
+            <ion-label position="stacked">Identificador del servicio</ion-label>
+            <ion-input formControlName="servicio" readonly></ion-input>
+          </ion-item>
+  
+          <ion-item>
+            <ion-label position="stacked">Identificación del prestador</ion-label>
+            <ion-input formControlName="prestadorServicioIdentificacion" readonly></ion-input>
+          </ion-item>
+  
+          <ion-button expand="block" type="submit" [disabled]="ofertaForm.invalid" class="map-button-dark">
+            Registrar oferta
+          </ion-button>
+  
+        </ion-card-content>
+      </ion-card>
+    </form>
+  </ion-content>  

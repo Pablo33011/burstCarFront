@@ -24,6 +24,12 @@
           <p><strong>Costo:</strong> {{ oferta.costo | currency:oferta.monedaServicio }}</p>
           <p><strong>Fecha inicio:</strong> {{ oferta.fechaInicio | date:'short' }}</p>
           <p><strong>Fecha fin:</strong> {{ oferta.fechaFin | date:'short' }}</p>
+
+          <div class="map-buttons">
+            <ion-button expand="block" fill="solid" color="tertiary" class="map-button-light" (click)="verPrestador(oferta)">
+              Ver prestador
+            </ion-button>
+          </div>
         </ion-card-content>
       </ion-card>
     </ion-list>

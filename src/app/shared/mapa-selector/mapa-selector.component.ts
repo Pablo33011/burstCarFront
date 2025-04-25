@@ -15,6 +15,8 @@ import { Geolocation } from '@capacitor/geolocation';
 export class MapaSelectorComponent implements AfterViewInit {
   
   @Input() formGroup!: FormGroup;
+  @Input() soloLectura: boolean = false;
+
   @ViewChild('mapa') mapaContainer!: ElementRef;
   mapa!: mapboxgl.Map;
   busqueda: string = '';
@@ -24,8 +26,14 @@ export class MapaSelectorComponent implements AfterViewInit {
     (mapboxgl as any).accessToken = environment.mapboxAccessToken;
 
     try {
-      const position = await Geolocation.getCurrentPosition();
-      const coords: [number, number] = [position.coords.longitude, position.coords.latitude];
+      let coords: [number, number];
+
+      if (this.soloLectura && this.formGroup?.value?.latitud && this.formGroup?.value?.longitud) {
+        coords = [this.formGroup.value.longitud, this.formGroup.value.latitud];
+      } else {
+        const position = await Geolocation.getCurrentPosition();
+        coords = [position.coords.longitude, position.coords.latitude];
+      }
 
       this.mapa = new mapboxgl.Map({
         container: this.mapaContainer.nativeElement,
@@ -34,7 +42,7 @@ export class MapaSelectorComponent implements AfterViewInit {
         zoom: 14,
       });
 
-      this.marcador = new mapboxgl.Marker({ draggable: true })
+      this.marcador = new mapboxgl.Marker({ draggable: !this.soloLectura })
         .setLngLat(coords)
         .addTo(this.mapa);
 
@@ -43,18 +51,20 @@ export class MapaSelectorComponent implements AfterViewInit {
         longitud: coords[0],
       });
 
-      this.marcador.on('dragend', async () => {
-        const { lng, lat } = this.marcador.getLngLat();
-        this.formGroup.patchValue({ latitud: lat, longitud: lng });
-        await this.obtenerDireccionDesdeCoordenadas(lat, lng);
-      });
+      if (!this.soloLectura) {
+        this.marcador.on('dragend', async () => {
+          const { lng, lat } = this.marcador.getLngLat();
+          this.formGroup.patchValue({ latitud: lat, longitud: lng });
+          await this.obtenerDireccionDesdeCoordenadas(lat, lng);
+        });
       
-      this.mapa.on('click', async (e) => {
-        const { lng, lat } = e.lngLat;
-        this.marcador.setLngLat([lng, lat]);
-        this.formGroup.patchValue({ latitud: lat, longitud: lng });
-        await this.obtenerDireccionDesdeCoordenadas(lat, lng);
-      });
+        this.mapa.on('click', async (e) => {
+          const { lng, lat } = e.lngLat;
+          this.marcador.setLngLat([lng, lat]);
+          this.formGroup.patchValue({ latitud: lat, longitud: lng });
+          await this.obtenerDireccionDesdeCoordenadas(lat, lng);
+        });
+      }
     } catch (error) {
       console.error('Error obteniendo ubicación:', error);
     }

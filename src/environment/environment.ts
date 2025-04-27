@@ -1,6 +1,15 @@
 export const environment = {
     production: false,
-    mapboxAccessToken: 'pk.eyJ1IjoicHJveWVjdG8yNSIsImEiOiJjbTl2bTd5NWUwbzdnMmlwczVkYzB4ZTQ0In0.LNXhyIZXk1845kMFcGG0BA'
+    mapboxAccessToken: '',
+    firebaseConfig: {
+      apiKey: "",
+      authDomain: "",
+      projectId: "",
+      storageBucket: "",
+      messagingSenderId: "",
+      appId: "",
+      measurementId: ""    
+    }
   };
 
 export const endpointEnviroment = {
@@ -20,5 +29,8 @@ export const endpointEnviroment = {
   peticionRegistrarSolicitante: 'http://localhost:8889/solicitante/nuevo',
   peticionRegistrarPrestador: 'http://localhost:8889/prestador/nuevo',
   peticionRegistrarUbicacionPrestador: 'http://localhost:8889/prestador/ubicacion/nuevo',
-  peticionConsultaPrestador: 'http://localhost:8889/prestador'
+  peticionConsultaPrestador: 'http://localhost:8889/prestador',
+  peticionActualizarEstadoServicioEnRecorrido: 'http://localhost:8889/servicio',
+  peticionConsultarServicioPoId: 'http://localhost:8889/servicio/informacion',
+  peticionActualizarEstadoOferta: 'http://localhost:8889/servicio/oferta'
 }  

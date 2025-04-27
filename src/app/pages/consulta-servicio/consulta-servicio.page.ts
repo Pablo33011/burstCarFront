@@ -15,6 +15,7 @@ export class ConsultaServicioPage{
   serviciosPorPagina = 3;
   totalPaginas = 0;
   identificacionUsuario: string = '';
+  estadoServicio: string = 'Finalizado';
 
   constructor(private servicioConsulta: ServicioConsulta, 
     private router: Router, 
@@ -85,4 +86,51 @@ export class ConsultaServicioPage{
       }
     }
 
+    verRecorrido(servicio: any) {
+      const idServicio = servicio.idServicio;
+      const latitudOrigen = servicio.latituUbicacion;
+      const longitudOrigen = servicio.longitudUbicacion;
+      const latitudDestino = servicio.latituDestino;
+      const longitudDestino = servicio.longitudDestino;
+    
+      this.router.navigate(
+        ['/tracking/prestador', idServicio],
+        {
+          queryParams: {
+            latitudOrigen: latitudOrigen,
+            longitudOrigen: longitudOrigen,
+            latitudDestino: latitudDestino,
+            longitudDestino: longitudDestino
+          }
+        }
+      );
+    }
+
+    verRecorridoSolicitante(servicio: any) {
+      const idServicio = servicio.idServicio;
+      const latitudOrigen = servicio.latituUbicacion;
+      const longitudOrigen = servicio.longitudUbicacion;
+      const latitudDestino = servicio.latitudDestinoUbicacion; 
+      const longitudDestino = servicio.longitudDestinoUbicacion;
+    
+      this.router.navigate(
+        ['/tracking/solicitante', idServicio], {
+        queryParams: {
+          latitudOrigen: latitudOrigen,
+          longitudOrigen: longitudOrigen,
+          latitudDestino: latitudDestino,
+          longitudDestino: longitudDestino
+        }
+      });
+    }
+
+    coultarBotonServicioTranscurso(servicio: any): boolean {
+      return this.rolUsuario === 'solicitante' && 
+             servicio.estadoServicio !== this.estadoServicio;
+    }
+
+    coultarBotonServicioTranscursoPrestador(servicio: any): boolean {
+      return this.rolUsuario === 'prestador' && 
+             servicio.estadoServicio !== this.estadoServicio;
+    }
 }

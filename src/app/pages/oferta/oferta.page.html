@@ -29,6 +29,34 @@
             <ion-button expand="block" fill="solid" color="tertiary" class="map-button-light" (click)="verPrestador(oferta)">
               Ver prestador
             </ion-button>
+
+            <ion-button expand="block" fill="solid" color="success" class="map-button-light"
+            *ngIf="rolUsuario === 'prestador' && oferta.prestadorServicio === idUsuario && oferta.estadoOferta === ofertaPermitida"
+            (click)="iniciarRecorridoPrestador(oferta)">
+            Iniciar recorrido
+          </ion-button>
+
+          <ion-grid>
+            <ion-row class="ion-justify-content-between">
+    
+              <ion-col size="5">
+                <ion-button expand="block" color="success" class="map-button-light"
+                  *ngIf="mostrarBotonDeEstadoOferta(oferta)" 
+                  (click)="aceptarOferta(oferta)">
+                  Aceptar oferta
+                </ion-button>
+              </ion-col>
+    
+              <ion-col size="5">
+                <ion-button expand="block" color="success" class="map-button-light"
+                  *ngIf="mostrarBotonDeEstadoOferta(oferta)"
+                  (click)="rechazarOferta(oferta)">
+                  Rechazar oferta
+                </ion-button>
+              </ion-col>
+            </ion-row>
+      
+          </ion-grid>
           </div>
         </ion-card-content>
       </ion-card>

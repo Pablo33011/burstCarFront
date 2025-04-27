@@ -16,6 +16,9 @@ export class OfertaConsultaPage implements OnInit{
   paginaActual: number = 0;
   totalPaginas: number = 1;
   cantidadPorPagina = 3;
+  idUsuario: string = '';
+  ofertaPermitida: string = 'Oferta aceptada';
+  ofertaRechazada: string = 'Oferta rechazada';
 
   constructor(private route: ActivatedRoute,
     private ofertaConsulta: OfertaConsultaServicio, 
@@ -41,6 +44,10 @@ export class OfertaConsultaPage implements OnInit{
     if (token) {
       const payload = JSON.parse(atob(token.split('.')[1]));
       this.rolUsuario = payload.rol;
+      console.log("rol: " + this.rolUsuario);
+      this.idUsuario = payload.numeroIdentificacion;
+      console.log("idUsuario: " + this.idUsuario);
+
     }
   }
 
@@ -64,7 +71,7 @@ export class OfertaConsultaPage implements OnInit{
   verPrestador(oferta: any) {
     const idPrestador = oferta.prestadorServicio;
     console.log("Navegando a:", `/prestador/${idPrestador}`);
-    this.router.navigateByUrl(`/paquete/peso/${idPrestador}`);
+    this.router.navigateByUrl(`/prestador/${idPrestador}`);
   }
 
 
@@ -80,5 +87,59 @@ export class OfertaConsultaPage implements OnInit{
       this.paginaActual--;
       this.obtenerOfertas();
     }
+  }
+
+  mostrarBotonDeEstadoOferta(oferta: any): boolean {
+    return this.rolUsuario === 'solicitante' && 
+           oferta.estadoOferta !== this.ofertaRechazada && 
+           oferta.estadoOferta !== this.ofertaPermitida;
+  }
+  
+
+  aceptarOferta(oferta : any){
+    const estado = { estadoOferta: 'Oferta aceptada' };
+    this.ofertaConsulta.actualizarEstadoSolicitante(oferta.idOferta, estado).subscribe({
+      next: () => {
+        console.log('Estado actualizado correctamente');
+      },
+      error: (err) => {
+        console.error('Error al actualizar estado', err);
+      }
+    });
+  }
+
+  rechazarOferta(oferta : any){
+    const estado = { estadoOferta: 'Oferta rechazada' };
+    this.ofertaConsulta.actualizarEstadoSolicitante(oferta.idOferta, estado).subscribe({
+      next: () => {
+        console.log('Estado actualizado correctamente');
+      },
+      error: (err) => {
+        console.error('Error al actualizar estado', err);
+      }
+    });
+  }
+
+  iniciarRecorridoPrestador(oferta: any) {  
+    this.ofertaConsulta.consultarServicioPorId(oferta.servicio).subscribe({
+      next: (servicio) => {
+        console.log('Servicio encontrado:', servicio);
+  
+        this.router.navigate(
+          ['/tracking/prestador', oferta.servicio],
+          {
+            queryParams: {
+              latitudOrigen: servicio.latituUbicacion,
+              longitudOrigen: servicio.longitudUbicacion,
+              latitudDestino: servicio.latituDestino,
+              longitudDestino: servicio.longitudDestino
+            }
+          }
+        );
+      },
+      error: (error) => {
+        console.error('Error al consultar el servicio:', error);
+      }
+    });
   }
 }

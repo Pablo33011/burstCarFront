@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient} from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { endpointEnviroment} from 'src/environment/environment';
-import { Servicio } from './servicio';
 
 const urlApiConsultaServicioTodos= endpointEnviroment.peticionConsultaServicioTodos;
 

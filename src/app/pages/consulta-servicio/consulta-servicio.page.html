@@ -26,17 +26,20 @@
         <p><strong>Fecha de creación:</strong> {{ servicio.fechaCreacion | date:'medium' }}</p>
 
         <div class="map-buttons">
-          <ion-button expand="block" fill="solid" color="success" class="map-button-light" (click)="verUbicacion(servicio)">
+          <ion-button *ngIf="coultarBotonServicioTranscurso(servicio)" expand="block" fill="solid" color="success" class="map-button-light" (click)="verRecorridoSolicitante(servicio)">
             Ver Trayecto
           </ion-button>
           <ion-button expand="block" fill="solid" color="tertiary" class="map-button-light" (click)="verPaquetes(servicio)">
             Ver paquetes asociados
           </ion-button>
-          <ion-button expand="block" fill="solid" color="tertiary" class="map-button-light" (click)="verOfertas(servicio)">
+          <ion-button *ngIf="servicio.estadoServicio !== estadoServicio" expand="block" fill="solid" color="tertiary" class="map-button-light" (click)="verOfertas(servicio)">
             Ver ofertas
           </ion-button>
-          <ion-button *ngIf="rolUsuario === 'solicitante'" expand="block" fill="solid" color="warning" class="map-button-light" (click)="actualizarServicio(servicio)">
+          <ion-button *ngIf="coultarBotonServicioTranscurso(servicio)" expand="block" fill="solid" color="warning" class="map-button-light" (click)="actualizarServicio(servicio)">
             Actualizar
+          </ion-button>
+          <ion-button *ngIf="coultarBotonServicioTranscursoPrestador(servicio)" expand="block" fill="solid" color="warning" class="map-button-light" (click)="verRecorrido(servicio)">
+            Iniciar servicio sin ofertar
           </ion-button>
         </div>
       </ion-card-content>

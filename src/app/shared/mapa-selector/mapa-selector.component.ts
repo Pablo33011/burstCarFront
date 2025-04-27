@@ -16,6 +16,10 @@ export class MapaSelectorComponent implements AfterViewInit {
   
   @Input() formGroup!: FormGroup;
   @Input() soloLectura: boolean = false;
+  @Input() latitudOrigen?: number; 
+  @Input() longitudOrigen?: number; 
+  @Input() latitudDestino?: number;
+  @Input() longitudDestino?: number;
 
   @ViewChild('mapa') mapaContainer!: ElementRef;
   mapa!: mapboxgl.Map;
@@ -42,7 +46,9 @@ export class MapaSelectorComponent implements AfterViewInit {
         zoom: 14,
       });
 
-      this.marcador = new mapboxgl.Marker({ draggable: !this.soloLectura })
+      const iconoPersona = document.createElement('div')
+      iconoPersona.innerHTML = `<img src="assets/icons/car-svgrepo-com.svg" style="width: 30px; height: 30px;">`;
+      this.marcador = new mapboxgl.Marker({ element: iconoPersona, draggable: !this.soloLectura })
         .setLngLat(coords)
         .addTo(this.mapa);
 
@@ -50,6 +56,21 @@ export class MapaSelectorComponent implements AfterViewInit {
         latitud: coords[1],
         longitud: coords[0],
       });
+
+      if (this.latitudOrigen !== undefined && this.longitudOrigen !== undefined) {
+        const iconoOrigen = document.createElement('div')
+        iconoOrigen.innerHTML = `<img src="assets/icons/package-check-svgrepo-com.svg" style="width: 30px; height: 30px;">`;
+        new mapboxgl.Marker({ element: iconoOrigen })
+          .setLngLat([this.longitudOrigen, this.latitudOrigen])
+          .addTo(this.mapa);
+      }
+      if (this.latitudDestino !== undefined && this.longitudDestino !== undefined) {
+        const iconoDestino = document.createElement('div')
+        iconoDestino.innerHTML = `<img src="assets/icons/delivery-svgrepo-com.svg" style="width: 30px; height: 30px;">`;
+        new mapboxgl.Marker({ element: iconoDestino })
+          .setLngLat([this.longitudDestino, this.latitudDestino])
+          .addTo(this.mapa);
+      }      
 
       if (!this.soloLectura) {
         this.marcador.on('dragend', async () => {
@@ -147,4 +168,11 @@ export class MapaSelectorComponent implements AfterViewInit {
       }
     }, 300);
   }
+
+  public moverMarcador(lat: number, lng: number) {
+    if (this.marcador) {
+      this.marcador.setLngLat([lng, lat]);
+      this.mapa.flyTo({ center: [lng, lat], zoom: 15 }); 
+    }
+  }  
 }

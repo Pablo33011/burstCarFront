@@ -24,6 +24,7 @@
     "@ionic/angular": "^7.6.0",
     "@ionic/cli": "^7.2.1",
     "@ionic/storage-angular": "^4.0.0",
+    "@turf/turf": "^7.2.0",
     "cordova-res": "^0.15.4",
     "firebase": "^11.6.1",
     "leaflet": "^1.9.4",

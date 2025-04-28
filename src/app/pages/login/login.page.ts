@@ -4,6 +4,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LoginServicio } from '../login/login.servicio';
 import { Login } from './login';
 import { StorageService } from 'src/app/shared/storage.service';
+import { Geolocation } from '@capacitor/geolocation';
+import { point, booleanPointInPolygon } from '@turf/turf';
+import { RIONEGRO_POLIGONO } from '../../data/rionegro.poligono';
 
 
 @Component({
@@ -14,6 +17,7 @@ import { StorageService } from 'src/app/shared/storage.service';
 export class LoginPage {
   loginForm: FormGroup;
   errorMessage: string = '';
+
   constructor(private fb: FormBuilder, private router: Router, private loginServicio: LoginServicio,
     private storageService: StorageService){
       this.loginForm = this.fb.group({
@@ -23,6 +27,31 @@ export class LoginPage {
       });
       
   }
+  private async validarLocalizacion(): Promise<boolean> {
+    try {
+      const { lat, lng } = await this.obtenerLocalizacionActual();
+      //Se le debe poner la negación a esta validación para que el 
+      // aplicativo no funcione si está fuera de Rioengro.
+      if (this.dentroDeRionegro(lat, lng)) {
+        this.agregarError('Debes estar dentro de Rionegro para iniciar sesión.');
+        return false;
+      }
+      return true;
+    } catch {
+      this.agregarError('No se pudo obtener tu ubicación. Activa el GPS.');
+      return false;
+    }
+  }
+
+  private async obtenerLocalizacionActual(): Promise<{ lat: number; lng: number }> {
+    const pos = await Geolocation.getCurrentPosition();
+    return { lat: pos.coords.latitude, lng: pos.coords.longitude };
+  }
+
+  private dentroDeRionegro(lat: number, lng: number): boolean {
+    const pt = point([lng, lat]);
+    return booleanPointInPolygon(pt, RIONEGRO_POLIGONO);
+  }
 
   //Vañidar token
   async checkToken() {
@@ -31,45 +60,64 @@ export class LoginPage {
   }
 
   async onSubmit() {
-    if (this.loginForm.valid) {
-      const { usuario, contrasena, tipoUsuario } = this.loginForm.value;
-      const credenciales : Login= { usuario, contrasena };
-
-    let loginObservable;
-
-    if (tipoUsuario === 'prestador') {
-      loginObservable = this.loginServicio.loginPrestador(credenciales);
-    } else {
-      loginObservable = this.loginServicio.loginSolicitante(credenciales);
+    this.LimpiarErrores();
+    if (!this.loginForm.valid) {
+      return this.agregarError('Por favor completa todos los campos.');
     }
-    
-    loginObservable.subscribe({
-      next: async (res: any) => {
-        const token = res.valor;
-        await this.storageService.cargar('token', token);
+    if (!(await this.validarLocalizacion())) {
+      return;
+    }
 
-        const payload = JSON.parse(atob(token.split('.')[1]));
+    this.ejecutarLogin();
+  }
 
-        if (payload.rol === 'prestador') {
-          this.router.navigateByUrl('/servicio/todos');
-        } else if (payload.rol === 'solicitante') {
-          this.router.navigateByUrl('/servicio/todos');
-        } else {
-          this.errorMessage = 'Rol desconocido.';
-        }
-      },
-      error: () => {
-        this.errorMessage = 'Credenciales inválidas.';
-      }
+  private ejecutarLogin() {
+    const { usuario, contrasena, tipoUsuario } = this.loginForm.value;
+    const cred: Login = { usuario, contrasena };
+
+    const login$ =
+      tipoUsuario === 'prestador'
+        ? this.loginServicio.loginPrestador(cred)
+        : this.loginServicio.loginSolicitante(cred);
+
+    login$.subscribe({
+      next: res   => this.respuestaLoginExitoso(res),
+      error: ()   => this.respuestaLoginFallido()
     });
+  }
+
+  private async respuestaLoginExitoso(res: any) {
+    const token = res.valor;
+    await this.storageService.cargar('token', token);
+
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    if (['prestador', 'solicitante'].includes(payload.rol)) {
+      this.router.navigateByUrl('/servicio/todos');
     } else {
-      this.errorMessage = 'Por favor complete todos los campos.';
+      this.agregarError('Rol desconocido.');
     }
   }
 
-  goToRegister() {
-    this.router.navigateByUrl('/register')
+  private respuestaLoginFallido() {
+    this.agregarError('Credenciales inválidas.');
   }
+
+  private LimpiarErrores() {
+    this.errorMessage = '';
+  }
+  private agregarError(msg: string) {
+    this.errorMessage = msg;
+  }
+
+  async registrarse() {
+      this.LimpiarErrores();
+  
+      if (!(await this.validarLocalizacion())) {
+        return;
+      }
+  
+      this.router.navigateByUrl('/registro');
+    }
 
   async logout() {
     await this.storageService.eliminar('token');

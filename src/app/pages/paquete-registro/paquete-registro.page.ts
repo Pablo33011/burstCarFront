@@ -64,7 +64,11 @@ export class PaqueteRegistroPage implements OnInit{
       }).toPromise();
 
       console.log('Paquete registrado con ID:', paqueteRes);
-      this.router.navigateByUrl(`/paquete/servicio/${this.idServicio}/informacion`);
+      this.router.navigateByUrl(`/paquete/servicio/${this.idServicio}/informacion`)
+      .then(() => {
+      window.location.reload();
+  });
+
 
     } catch (err) {
       console.error('Error en el registro del paquete:', err);

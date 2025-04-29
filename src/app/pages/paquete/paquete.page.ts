@@ -47,7 +47,11 @@ export class PaqueteConsultaPage implements OnInit{
   verPeso(contenido: any) {
     const idContenido = contenido.identificador;
     console.log("Navegando a:", `/paquete/${idContenido}/informacion`);
-    this.router.navigateByUrl(`/paquete/peso/${idContenido}/informacion`);
+    this.router.navigateByUrl(`/paquete/peso/${idContenido}/informacion`)
+    .then(() => {
+    window.location.reload();
+  });
+
   }
 
   async obtenerRol() {
@@ -64,7 +68,11 @@ export class PaqueteConsultaPage implements OnInit{
   }
   
   crearPaquete() {
-    this.router.navigateByUrl(`/paquete/nuevo/${this.idServicio}`);
+    this.router.navigateByUrl(`/paquete/nuevo/${this.idServicio}`)
+    .then(() => {
+    window.location.reload();
+    });
+
   }
 
   get totalPaginas(): number {

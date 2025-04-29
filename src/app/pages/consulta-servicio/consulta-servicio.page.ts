@@ -34,7 +34,11 @@ export class ConsultaServicioPage{
   }
 
   crearServicio() {
-    this.router.navigateByUrl(`/servicio/nuevo`);
+    this.router.navigateByUrl(`/servicio/nuevo`)
+    .then(() => {
+    window.location.reload();
+  });
+
   }
 
   cargarServicios() { 
@@ -54,13 +58,21 @@ export class ConsultaServicioPage{
   verPaquetes(servicio: any) {
     const idServicio = servicio.idServicio;
     console.log("Navegando a:", `/paquete/${idServicio}/informacion`);
-    this.router.navigateByUrl(`/paquete/servicio/${idServicio}/informacion`);
+    this.router.navigateByUrl(`/paquete/servicio/${idServicio}/informacion`)
+    .then(() => {
+    window.location.reload();
+  });
+
   }
   
   verOfertas(servicio: any) {
     const idServicio = servicio.idServicio;
     console.log("Navegando a:", `/servicio/oferta/todos/${idServicio}`);
-    this.router.navigateByUrl(`/servicio/oferta/todos/${idServicio}`);
+    this.router.navigateByUrl(`/servicio/oferta/todos/${idServicio}`)
+    .then(() => {
+    window.location.reload();
+  });
+
   }  
 
     async obtenerRol() {

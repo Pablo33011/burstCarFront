@@ -93,7 +93,11 @@ export class RegisterPage implements OnInit, AfterViewInit {
         await this.registroServicio.registrarSolicitante(datosSolicitante).toPromise();
       }
 
-      this.router.navigateByUrl('/login');
+      this.router.navigateByUrl('/login')
+      .then(() => {
+      window.location.reload();
+      });
+
     } catch (error) {
       console.error('Error al registrar:', error);
     }

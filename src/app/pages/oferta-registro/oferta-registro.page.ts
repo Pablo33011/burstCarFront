@@ -58,7 +58,11 @@ export class OfertaRegistroPage implements OnInit{
       this.ofertaServicio.registrarOferta(datos).subscribe({
         next: (res) => {
           console.log('Oferta registrada con éxito:', res);
-          this.router.navigateByUrl('/oferta/todas/' + this.idServicio);
+          this.router.navigateByUrl('/oferta/todas/' + this.idServicio)
+          .then(() => {
+          window.location.reload();
+  });
+
         },
         error: (err) => {
           console.error('Error al registrar la oferta:', err);

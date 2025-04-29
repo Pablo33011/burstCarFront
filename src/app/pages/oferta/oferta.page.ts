@@ -65,13 +65,21 @@ export class OfertaConsultaPage implements OnInit{
   }
 
   crearOferta() {
-    this.router.navigateByUrl(`oferta/nueva/servicio/${this.idServicio}`);
+    this.router.navigateByUrl(`oferta/nueva/servicio/${this.idServicio}`)
+  .then(() => {
+    window.location.reload();
+  });
+
   }
 
   verPrestador(oferta: any) {
     const idPrestador = oferta.prestadorServicio;
     console.log("Navegando a:", `/prestador/${idPrestador}`);
-    this.router.navigateByUrl(`/prestador/${idPrestador}`);
+    this.router.navigateByUrl(`/prestador/${idPrestador}`)
+  .then(() => {
+    window.location.reload();
+  });
+
   }
 
 

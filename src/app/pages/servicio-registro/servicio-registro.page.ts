@@ -132,7 +132,11 @@ export class RegistroServicioPage implements OnInit {
       }).toPromise();
   
       console.log('Servicio registrado con ID:', servicioRes);
-      this.router.navigateByUrl('/servicio/todos');
+      this.router.navigateByUrl('/servicio/todos')
+      .then(() => {
+      window.location.reload();
+      });
+
   
     } catch (error) {
       console.error('Error al registrar servicio:', error);

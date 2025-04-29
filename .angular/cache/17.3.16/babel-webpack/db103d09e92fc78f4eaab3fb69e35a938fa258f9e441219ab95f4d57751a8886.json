@@ -1,1 +1,0 @@
-{"ast":null,"code":"export const environment = {\n  production: false,\n  mapboxAccessToken: 'TOKEN'\n};\nexport const endpointEnviroment = {\n  loginPrestador: \"http://localhost:8889/prestador/sesion\"\n};","map":null,"metadata":{},"sourceType":"module","externalDependencies":[]}

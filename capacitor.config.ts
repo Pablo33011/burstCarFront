@@ -1,8 +1,8 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.example.app',
-  appName: 'login-register-app',
+  appId: 'co.edu.uco.burstcar.frontend',
+  appName: 'burstcar-app',
   webDir: 'www'
 };
 

@@ -32,10 +32,10 @@ export class LoginPage {
       const { lat, lng } = await this.obtenerLocalizacionActual();
       //Se le debe poner la negación a esta validación para que el 
       // aplicativo no funcione si está fuera de Rioengro.
-      if (this.dentroDeRionegro(lat, lng)) {
+      /*if (this.dentroDeRionegro(lat, lng)) {
         this.agregarError('Debes estar dentro de Rionegro para iniciar sesión.');
         return false;
-      }
+      }*/
       return true;
     } catch {
       this.agregarError('No se pudo obtener tu ubicación. Activa el GPS.');
@@ -92,7 +92,10 @@ export class LoginPage {
 
     const payload = JSON.parse(atob(token.split('.')[1]));
     if (['prestador', 'solicitante'].includes(payload.rol)) {
-      this.router.navigateByUrl('/servicio/todos');
+
+      this.router.navigateByUrl('/servicio/todos').then(() => {
+        window.location.reload();
+      });
     } else {
       this.agregarError('Rol desconocido.');
     }
@@ -116,11 +119,15 @@ export class LoginPage {
         return;
       }
   
-      this.router.navigateByUrl('/registro');
+      this.router.navigateByUrl('/registro').then(() => {
+        window.location.reload();
+      });
     }
 
   async logout() {
     await this.storageService.eliminar('token');
-    this.router.navigateByUrl('/login');
+    this.router.navigateByUrl('/login').then(() => {
+      window.location.reload();
+    });
   }
 }  

@@ -2,6 +2,7 @@ node_modules/
 www/
 platforms/
 dist/
+.angular/
 build/
 .tmp/
 out-tsc/

@@ -5,7 +5,6 @@ const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', loadChildren: () => import('./pages/login/login.module').then(m => m.LoginPageModule) },
   { path: 'registro', loadChildren: () => import('./pages/register/register.module').then(m => m.RegisterPageModule) },
-  { path: 'prestador/ubicacion', loadChildren: () => import('./pages/ubicacion-prestador/ubicacion-prestador.module').then(m => m.UbicacionPrestadorModule) },
   { path: 'servicio/todos', loadChildren: () => import('./pages/consulta-servicio/consulta-servicio.module').then(m => m.ConsultaServicioPageModule) },
   { path: 'paquete/servicio/:id/informacion', loadChildren: () => import('./pages/paquete/paquete.module').then(m => m.PaqueteServicioPageModule) },
   { path: 'paquete/peso/:id/informacion', loadChildren: () => import('./pages/peso/peso.module').then(m => m.PesoContenidoPageModule) },

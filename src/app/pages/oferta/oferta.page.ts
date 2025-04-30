@@ -143,11 +143,20 @@ export class OfertaConsultaPage implements OnInit{
               longitudDestino: servicio.longitudDestino
             }
           }
-        );
+        ).then(() => {
+          window.location.reload();
+        })
       },
       error: (error) => {
         console.error('Error al consultar el servicio:', error);
       }
     });
+  }
+
+  regresar() {
+    this.router.navigateByUrl(`/servicio/todos`)
+    .then(() => {
+    window.location.reload();
+  });
   }
 }

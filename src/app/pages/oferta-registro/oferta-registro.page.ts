@@ -71,4 +71,11 @@ export class OfertaRegistroPage implements OnInit{
     }
   }  
 
+  regresar() {
+    this.router.navigateByUrl(`/servicio/todos`)
+    .then(() => {
+    window.location.reload();
+  });
+  }
+
 }

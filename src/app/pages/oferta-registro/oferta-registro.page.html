@@ -3,12 +3,17 @@
       <ion-title class="custom-header-title">Registrar nueva oferta</ion-title>
     </ion-toolbar>
   </ion-header>
-  
   <ion-content class="consulta-background">
     <form [formGroup]="ofertaForm" (ngSubmit)="registrarOferta()">
       <ion-card class="servicio-card consulta-container">
         <ion-card-content>
   
+          <div class="consulta-container">
+            <ion-button expand="block" fill="solid" color="success" class="map-button-ligth" (click)="regresar()">
+              regresar
+            </ion-button>
+          </div>
+          
           <ion-item>
             <ion-label position="stacked">Descripción</ion-label>
             <ion-input formControlName="descripcion"></ion-input>

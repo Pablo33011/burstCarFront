@@ -6,6 +6,11 @@
 
 <ion-content class="consulta-background">
   <div class="consulta-container">
+    <div class="consulta-container">
+      <ion-button expand="block" fill="solid" color="success" class="map-button-light" (click)="regresar()">
+        regresar
+      </ion-button>
+    </div>
     <app-mapa-selector 
       [formGroup]="dummyForm" 
       [soloLectura]="true"
@@ -44,7 +49,7 @@
   
         <ion-row class="map-button-light" style="margin-top: 10px;">
           <ion-col size="10">
-            <ion-button expand="block" color="tertiary"
+            <ion-button expand="block" color="tertiary" class="map-button-light"
               (click)="finalizarRecorrido()">
               Finalizar recorrido
             </ion-button>

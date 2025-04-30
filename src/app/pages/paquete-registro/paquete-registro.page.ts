@@ -74,4 +74,11 @@ export class PaqueteRegistroPage implements OnInit{
       console.error('Error en el registro del paquete:', err);
     }
   }
+
+  regresar() {
+    this.router.navigateByUrl(`/servicio/todos`)
+    .then(() => {
+    window.location.reload();
+  });
+  }
 }

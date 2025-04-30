@@ -142,4 +142,11 @@ export class RegistroServicioPage implements OnInit {
       console.error('Error al registrar servicio:', error);
     }
   }  
+
+  regresar() {
+    this.router.navigateByUrl(`/servicio/todos`)
+    .then(() => {
+    window.location.reload();
+  });
+  }
 }

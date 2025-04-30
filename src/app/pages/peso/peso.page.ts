@@ -55,4 +55,11 @@ export class PesoConsultaPage implements OnInit{
     console.log("Actualizar:", peso);
   }
 
+  regresar() {
+    this.router.navigateByUrl(`/servicio/todos`)
+    .then(() => {
+    window.location.reload();
+  });
+  }
+
 }

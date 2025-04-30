@@ -75,6 +75,13 @@ export class ConsultaServicioPage{
 
   }  
 
+  regresar() {
+    this.router.navigateByUrl(`/login`)
+    .then(() => {
+    window.location.reload();
+  });
+  }
+
     async obtenerRol() {
       const token = await this.storageServicio.obtener('token');
       console.log('Token obtenido:', token);
@@ -115,7 +122,9 @@ export class ConsultaServicioPage{
             longitudDestino: longitudDestino
           }
         }
-      );
+      ).then(() => {
+        window.location.reload();
+      });
     }
 
     verRecorridoSolicitante(servicio: any) {
@@ -133,6 +142,8 @@ export class ConsultaServicioPage{
           latitudDestino: latitudDestino,
           longitudDestino: longitudDestino
         }
+      }).then(()=>{
+        window.location.reload();
       });
     }
 

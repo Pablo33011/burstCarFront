@@ -102,4 +102,11 @@ export class RegisterPage implements OnInit, AfterViewInit {
       console.error('Error al registrar:', error);
     }
   }
+
+  regresar() {
+    this.router.navigateByUrl(`/login`)
+    .then(() => {
+    window.location.reload();
+  });
+  }
 }

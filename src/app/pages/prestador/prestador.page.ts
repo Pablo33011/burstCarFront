@@ -1,8 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { StorageService } from 'src/app/shared/storage.service';
 import { PrestadorConsultaServicio } from './prestador.servicio';
-import { Prestador } from './prestador';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MapaSelectorComponent } from 'src/app/shared/mapa-selector/mapa-selector.component';
 
@@ -20,7 +18,8 @@ export class PrestadorConsultaPage implements OnInit{
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
-    private prestadorService: PrestadorConsultaServicio
+    private prestadorService: PrestadorConsultaServicio,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -51,5 +50,12 @@ export class PrestadorConsultaPage implements OnInit{
     const porcentaje = Math.min(Math.max(valor, 0), 5) * 20;
     return `${porcentaje}%`;
   }  
+
+  regresar() {
+    this.router.navigateByUrl(`/servicio/todos`)
+    .then(() => {
+    window.location.reload();
+  });
+  }
   
 }

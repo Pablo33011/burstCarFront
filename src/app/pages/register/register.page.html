@@ -9,6 +9,11 @@
     <img src="../../../assets/img/undraw_vintage_q09n.svg" alt="decoración" />
   </div>
 
+  <div>
+    <ion-button expand="block" fill="solid" color="success" class="login-button" (click)="regresar()">
+      regresar
+    </ion-button>
+  </div>
   <div class="login-container">
     <form [formGroup]="registroForm" (ngSubmit)="registrar()">
       <ion-input formControlName="nombre" placeholder="Nombre completo" fill="outline" class="login-input"></ion-input>

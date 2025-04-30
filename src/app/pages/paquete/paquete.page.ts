@@ -96,4 +96,11 @@ export class PaqueteConsultaPage implements OnInit{
     }
   }
 
+  regresar() {
+    this.router.navigateByUrl(`/servicio/todos`)
+    .then(() => {
+    window.location.reload();
+  });
+  }
+
 }

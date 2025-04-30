@@ -1,6 +1,6 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MapaSelectorComponent } from 'src/app/shared/mapa-selector/mapa-selector.component';
 import { FirebaseTrackingServicio } from 'src/app/shared/tracking/firebase-tracking.servicio';
 
@@ -22,7 +22,8 @@ export class TrackingSolicitantePage implements OnInit {
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
-    private firebaseTracking: FirebaseTrackingServicio
+    private firebaseTracking: FirebaseTrackingServicio,
+    private router: Router
   ) {
     this.dummyForm = this.fb.group({
       latitud: [''],
@@ -53,5 +54,12 @@ export class TrackingSolicitantePage implements OnInit {
         }, 300);
       }
     });
+  }
+
+  regresar() {
+    this.router.navigateByUrl(`/servicio/todos`)
+    .then(() => {
+    window.location.reload();
+  });
   }
 }

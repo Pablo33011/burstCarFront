@@ -122,7 +122,9 @@ export class TrackingPrestadorPage implements OnInit {
       error: (err) => console.error('Error cambiando estado:', err)
     });
 
-    this.router.navigate(['/servicio/todos']);
+    this.router.navigate(['/servicio/todos']).then(() => {
+      window.location.reload();
+    });
   }
 
   //Prueba movimiento 
@@ -150,5 +152,12 @@ export class TrackingPrestadorPage implements OnInit {
         console.error('Error al actualizar estado', err);
       }
     });
-  }  
+  } 
+  
+  regresar() {
+    this.router.navigateByUrl(`/servicio/todos`)
+    .then(() => {
+    window.location.reload();
+  });
+  }
 }

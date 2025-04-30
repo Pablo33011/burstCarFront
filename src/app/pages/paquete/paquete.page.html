@@ -10,6 +10,12 @@
         Crear nuevo paquete
       </ion-button>
     </div>
+
+    <div class="consulta-container">
+      <ion-button expand="block" fill="solid" color="success" class="map-button-dark" (click)="regresar()">
+        regresar
+      </ion-button>
+    </div>
   
     <ion-list *ngFor="let paquete of obtenerPaquetesPaginaActual()" class="consulta-container">
       <ion-card class="servicio-card">

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PaqueteServicio } from './paquete-registro.servicio';
-import { StorageService } from 'src/app/shared/storage.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({

@@ -1,21 +1,22 @@
 export const environment = {
-    production: false,
-    mapboxAccessToken: '',
-    firebaseConfig: {
-      apiKey: "",
-      authDomain: "",
-      projectId: "",
-      storageBucket: "",
-      messagingSenderId: "",
-      appId: "",
-      measurementId: ""    
-    }
-  };
+  production: false,
+  mapboxAccessToken: 'pk.eyJ1IjoicHJveWVjdG8yNSIsImEiOiJjbTl2bTd5NWUwbzdnMmlwczVkYzB4ZTQ0In0.LNXhyIZXk1845kMFcGG0BA',
+  firebaseConfig: {
+    apiKey: "AIzaSyDkh_HlNBYAmWs2OJQzjkVNXTo4EHRjj7w",
+    authDomain: "burstcar-d9894.firebaseapp.com",
+    projectId: "burstcar-d9894",
+    storageBucket: "burstcar-d9894.firebasestorage.app",
+    messagingSenderId: "200348968824",
+    appId: "1:200348968824:web:22e820bba9b4f8fc324a8d",
+    measurementId: "G-9CQ3MVR56W"    
+  }
+};
 
 export const endpointEnviroment = {
   loginPrestador: 'http://localhost:8889/prestador/sesion',
   loginSolicitante: 'http://localhost:8889/solicitante/sesion', 
   peticionConsultaServicioTodos: 'http://localhost:8889/servicio/todos/95674536-47ba-43af-8161-f329df3a04e7',
+  peticionCambiarServicioANuevo: 'http://localhost:8889/servicio',
   peticionConsultaOfertaTodos: 'http://localhost:8889/servicio/oferta/todos',
   peticionConsultarPaquete: 'http://localhost:8889/paquete/servicio',
   peticionConsultaPesoContenido: 'http://localhost:8889/paquete/peso/contenido',

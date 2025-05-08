@@ -124,7 +124,7 @@ export class RegistroServicioPage implements OnInit {
         descripcion: datos.descripcion,
         identificaionSolicitante: datos.identificaionSolicitante,
         tipoServicio: datos.tipoServicio,
-        estadoServicio: 'Borrador',
+        estadoServicio: 'En borrador',
         ubicacion: idUbicacionOrigen,
         destino: idDestino,
         costoInicial: datos.costoInicial,

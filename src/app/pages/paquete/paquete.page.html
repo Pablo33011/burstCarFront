@@ -49,6 +49,14 @@
       </ion-card>
     </ion-list>
 
+    <div class="consulta-container" *ngIf="rolUsuario === 'solicitante'">
+      <ion-button expand="block" fill="solid" color="success" class="map-button-dark" (click)="publicarServicioBoton()" 
+        [disabled]="!publicarServicio">
+        Publicar servicio
+      </ion-button>
+    </div>    
+
+
   <div class="consulta-container paginacion-bloque" *ngIf="paquetes.length > 0">
   <ion-grid>
     <ion-row class="ion-align-items-center ion-justify-content-between">

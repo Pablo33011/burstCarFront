@@ -15,7 +15,8 @@ export class ConsultaServicioPage{
   serviciosPorPagina = 3;
   totalPaginas = 0;
   identificacionUsuario: string = '';
-  estadoServicio: string = 'Finalizado';
+  estadoServicioSolicitante: string = 'En transcurso';
+  estadoServicioPrestador: string = 'Finalizado';
 
   constructor(private servicioConsulta: ServicioConsulta, 
     private router: Router, 
@@ -57,8 +58,16 @@ export class ConsultaServicioPage{
 
   verPaquetes(servicio: any) {
     const idServicio = servicio.idServicio;
+    const estadoServicio = servicio.estadoServicio;
     console.log("Navegando a:", `/paquete/${idServicio}/informacion`);
-    this.router.navigateByUrl(`/paquete/servicio/${idServicio}/informacion`)
+    this.router.navigate(
+      [`/paquete/servicio/${idServicio}/informacion`],
+      {
+        queryParams: {
+          estadoServicio: estadoServicio
+        }
+      }
+    )
     .then(() => {
     window.location.reload();
   });
@@ -149,11 +158,11 @@ export class ConsultaServicioPage{
 
     coultarBotonServicioTranscurso(servicio: any): boolean {
       return this.rolUsuario === 'solicitante' && 
-             servicio.estadoServicio !== this.estadoServicio;
+             servicio.estadoServicio === this.estadoServicioSolicitante;
     }
 
     coultarBotonServicioTranscursoPrestador(servicio: any): boolean {
       return this.rolUsuario === 'prestador' && 
-             servicio.estadoServicio !== this.estadoServicio;
+             servicio.estadoServicio !== this.estadoServicioPrestador;
     }
 }

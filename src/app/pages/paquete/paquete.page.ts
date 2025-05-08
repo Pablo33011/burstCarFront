@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PaqueteServicio } from './paquete.servicio';
 import { StorageService } from 'src/app/shared/storage.service';
+import { ServicioActualizarEstado } from './servicio-actualizar-estado.servicio';
 
 @Component({
   selector: 'app-consulta-paquete',
@@ -15,33 +16,23 @@ export class PaqueteConsultaPage implements OnInit{
   rolUsuario: string = '';
   paginaActual = 1;
   paquetesPorPagina = 1;
+  publicarServicio = false;
+  estadoServicioParaPublicar = "";
 
   constructor(private route: ActivatedRoute,
     private paqueteConsulta: PaqueteServicio, 
+    private estadoServicio: ServicioActualizarEstado,
     private router: Router,
     private storageServicio: StorageService
   ) {}
 
-
-  ionViewWillEnter() {
-    this.ngOnInit();
-  }
-
   async ngOnInit() {
     this.idServicio = this.route.snapshot.paramMap.get('id')!;
-    console.log('ID recibido:', this.idServicio);
-    await this.obtenerRol();
-
-    this.paqueteConsulta.paquetePorIdServicio(this.idServicio).subscribe({
-      next: (res) => {
-        this.paquetes = res;
-      },
-      error: (i) => {
-        console.error("Error al cargar los servicios:", i);
-        i.error && console.error("Detalles del error:", i.error);
-        i.status && console.error("Estado del error:", i.status);
-      },    
+        this.route.queryParams.subscribe(params => {
+      this.estadoServicioParaPublicar = params['estadoServicio'];
     });
+    await this.obtenerRol();
+    this.cargarPaquetes();
   }
 
   verPeso(contenido: any) {
@@ -53,6 +44,40 @@ export class PaqueteConsultaPage implements OnInit{
   });
 
   }
+
+  private cargarPaquetes(): void {
+    this.paqueteConsulta.paquetePorIdServicio(this.idServicio).subscribe({
+      next: (res) => {
+        this.paquetes = res;
+        this.publicarServicio = this.paquetes.length > 0 && this.estadoServicioParaPublicar === 'En borrador';
+        console.log("Data: " + this.paquetes.length)
+      },
+      error: (err) => {
+        console.error("Error al cargar los paquetes:", err?.error || err);
+        this.publicarServicio = false;
+      }
+    });
+  }
+
+  public async publicarServicioBoton(): Promise<void> {
+    try {
+      await this.actualizarEstado();
+      console.log('Servicio publicado correctamente');
+      this.router.navigateByUrl('/servicio/todos')
+      .then(() => {
+      window.location.reload();
+      });
+    } catch (error) {
+      console.error('Error al publicar el servicio:', error);
+    }
+  }
+
+  private actualizarEstado(): Promise<any> {
+    return this.estadoServicio.actualizarEstadoServicio(this.idServicio, {
+      estadoServicio: "Nuevo"
+    }).toPromise();
+  }
+  
 
   async obtenerRol() {
     const token = await this.storageServicio.obtener('token');

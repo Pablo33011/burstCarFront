@@ -7,6 +7,7 @@ import { StorageService } from 'src/app/shared/storage.service';
 import { Geolocation } from '@capacitor/geolocation';
 import { point, booleanPointInPolygon } from '@turf/turf';
 import { RIONEGRO_POLIGONO } from '../../data/rionegro.poligono';
+import { AlertaServicio } from 'src/app/services/alertas-errores.servicio';
 
 
 @Component({
@@ -19,7 +20,8 @@ export class LoginPage {
   errorMessage: string = '';
 
   constructor(private fb: FormBuilder, private router: Router, private loginServicio: LoginServicio,
-    private storageService: StorageService){
+    private storageService: StorageService,
+    private alerta: AlertaServicio){
       this.loginForm = this.fb.group({
         usuario: ['', Validators.required],
         contrasena: ['', Validators.required],
@@ -32,13 +34,13 @@ export class LoginPage {
       const { lat, lng } = await this.obtenerLocalizacionActual();
       //Se le debe poner la negación a esta validación para que el 
       // aplicativo no funcione si está fuera de Rioengro.
-      /*if (this.dentroDeRionegro(lat, lng)) {
-        this.agregarError('Debes estar dentro de Rionegro para iniciar sesión.');
+      /*if (!this.dentroDeRionegro(lat, lng)) {
+        this.alerta.mostrarError({ message: 'Debes estar dentro de Rionegro para iniciar sesión.' });
         return false;
       }*/
       return true;
     } catch {
-      this.agregarError('No se pudo obtener tu ubicación. Activa el GPS.');
+      this.alerta.mostrarError({ message: 'No se pudo obtener tu ubicación. Activa el GPS.' });
       return false;
     }
   }
@@ -53,16 +55,14 @@ export class LoginPage {
     return booleanPointInPolygon(pt, RIONEGRO_POLIGONO);
   }
 
-  //Vañidar token
   async checkToken() {
     const token = await this.storageService.obtener('token');
-    console.log('Token guardado:', token);
   }
 
   async onSubmit() {
-    this.LimpiarErrores();
     if (!this.loginForm.valid) {
-      return this.agregarError('Por favor completa todos los campos.');
+      this.alerta.mostrarError({ message: 'Por favor completa todos los campos.' });
+      return;
     }
     if (!(await this.validarLocalizacion())) {
       return;
@@ -79,11 +79,11 @@ export class LoginPage {
       tipoUsuario === 'prestador'
         ? this.loginServicio.loginPrestador(cred)
         : this.loginServicio.loginSolicitante(cred);
-
-    login$.subscribe({
-      next: res   => this.respuestaLoginExitoso(res),
-      error: ()   => this.respuestaLoginFallido()
-    });
+        
+        login$.subscribe({
+          next: res => this.respuestaLoginExitoso(res),
+          error: err => this.respuestaLoginFallido(err)
+        });
   }
 
   private async respuestaLoginExitoso(res: any) {
@@ -97,24 +97,16 @@ export class LoginPage {
         window.location.reload();
       });
     } else {
-      this.agregarError('Rol desconocido.');
+      this.alerta.mostrarError({ message: 'Rol desconocido.' });
     }
   }
 
-  private respuestaLoginFallido() {
-    this.agregarError('Credenciales inválidas.');
+  private respuestaLoginFallido(error: any) {
+    const mensaje = error?.error?.message || 'Credenciales inválidas.';
+    this.alerta.mostrarError({ message: mensaje });
   }
 
-  private LimpiarErrores() {
-    this.errorMessage = '';
-  }
-  private agregarError(msg: string) {
-    this.errorMessage = msg;
-  }
-
-  async registrarse() {
-      this.LimpiarErrores();
-  
+  async registrarse() {  
       if (!(await this.validarLocalizacion())) {
         return;
       }

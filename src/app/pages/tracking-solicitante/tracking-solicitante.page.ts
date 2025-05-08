@@ -1,6 +1,7 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AlertaServicio } from 'src/app/services/alertas-errores.servicio';
 import { MapaSelectorComponent } from 'src/app/shared/mapa-selector/mapa-selector.component';
 import { FirebaseTrackingServicio } from 'src/app/shared/tracking/firebase-tracking.servicio';
 
@@ -23,7 +24,8 @@ export class TrackingSolicitantePage implements OnInit {
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private firebaseTracking: FirebaseTrackingServicio,
-    private router: Router
+    private router: Router,
+    private alerta: AlertaServicio
   ) {
     this.dummyForm = this.fb.group({
       latitud: [''],
@@ -45,15 +47,24 @@ export class TrackingSolicitantePage implements OnInit {
   }
 
   escucharTracking() {
-    this.firebaseTracking.escucharUbicacion(this.servicioId, ({ latitud, longitud }) => {
-      if (latitud && longitud) {
-        this.dummyForm.patchValue({ latitud, longitud });
+    try {
+      this.firebaseTracking.escucharUbicacion(this.servicioId, ({ latitud, longitud }) => {
+        if (latitud && longitud) {
+          this.dummyForm.patchValue({ latitud, longitud });
 
-        setTimeout(() => {
-          this.mapaSelector.moverMarcador(latitud, longitud);
-        }, 300);
-      }
-    });
+          setTimeout(() => {
+            this.mapaSelector?.moverMarcador(latitud, longitud);
+          }, 300);
+        } else {
+          this.alerta.mostrarMensaje(
+            'Esperando ubicación',
+            'Aún no se ha recibido una ubicación del prestador. Intenta en unos segundos.'
+          );
+        }
+      });
+    } catch (error) {
+      this.alerta.mostrarError(error, 'Error al escuchar el tracking del prestador');
+    }
   }
 
   regresar() {

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PesoServicio } from './peso.servicio';
 import { StorageService } from 'src/app/shared/storage.service';
+import { AlertaServicio } from 'src/app/services/alertas-errores.servicio';
 
 @Component({
   selector: 'app-consulta-peso',
@@ -17,7 +18,8 @@ export class PesoConsultaPage implements OnInit{
   constructor(private route: ActivatedRoute,
     private pesoConsulta: PesoServicio, 
     private router: Router,
-    private storageServicio: StorageService
+    private storageServicio: StorageService,
+    private alerta: AlertaServicio
   ) {}
 
 
@@ -29,16 +31,17 @@ export class PesoConsultaPage implements OnInit{
     this.idContenido = this.route.snapshot.paramMap.get('id')!;
     console.log('ID recibido:', this.idContenido);
     await this.obtenerRol();
+    this.cargarPeso();
+  }
 
+  cargarPeso() {
     this.pesoConsulta.pesoPorIdContenido(this.idContenido).subscribe({
       next: (res) => {
         this.peso = res;
       },
-      error: (i) => {
-        console.error("Error al cargar los servicios:", i);
-        i.error && console.error("Detalles del error:", i.error);
-        i.status && console.error("Estado del error:", i.status);
-      },    
+      error: (err) => {
+        this.alerta.mostrarError(err, 'No se pudo cargar el peso');
+      }
     });
   }
 

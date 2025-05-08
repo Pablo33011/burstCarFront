@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { PrestadorConsultaServicio } from './prestador.servicio';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MapaSelectorComponent } from 'src/app/shared/mapa-selector/mapa-selector.component';
+import { AlertaServicio } from 'src/app/services/alertas-errores.servicio';
 
 @Component({
   selector: 'app-consulta-prestador',
@@ -19,30 +20,34 @@ export class PrestadorConsultaPage implements OnInit{
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private prestadorService: PrestadorConsultaServicio,
-    private router: Router
+    private router: Router,
+    private alerta: AlertaServicio
   ) {}
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
     this.prestadorService.obtenerPrestador(id).subscribe((res) => {
       this.prestador = res;
-
-      this.ubicacionForm = this.fb.group({
-        latitud: [res.ubicacionPrestador?.latitud],
-        longitud: [res.ubicacionPrestador?.longitud],
-        nombrePais: [res.ubicacionPrestador?.delimitacionPrestador?.nombrePais],
-        nombreDepartamento: [res.ubicacionPrestador?.delimitacionPrestador?.nombreDepartamento],
-        nombreCiudad: [res.ubicacionPrestador?.delimitacionPrestador?.nombreCiudad],
-        nombreCorregimiento: [res.ubicacionPrestador?.delimitacionPrestador?.nombreCorregimiento || ''],
-        nombreVia: [res.ubicacionPrestador?.viaPrestador?.nombre],
-        numeroVia: [res.ubicacionPrestador?.numeroVia],
-        direccion: [res.ubicacionPrestador?.direccion],
-      });
+      this.inicializarFormulario(res);
     });
-
     setTimeout(() => {
       this.mapaConsulta?.redibujarMapa();
     }, 300);
+    
+  }
+
+  inicializarFormulario(res: any) {
+    this.ubicacionForm = this.fb.group({
+      latitud: [res.ubicacionPrestador?.latitud],
+      longitud: [res.ubicacionPrestador?.longitud],
+      nombrePais: [res.ubicacionPrestador?.delimitacionPrestador?.nombrePais],
+      nombreDepartamento: [res.ubicacionPrestador?.delimitacionPrestador?.nombreDepartamento],
+      nombreCiudad: [res.ubicacionPrestador?.delimitacionPrestador?.nombreCiudad],
+      nombreCorregimiento: [res.ubicacionPrestador?.delimitacionPrestador?.nombreCorregimiento || ''],
+      nombreVia: [res.ubicacionPrestador?.viaPrestador?.nombre],
+      numeroVia: [res.ubicacionPrestador?.numeroVia],
+      direccion: [res.ubicacionPrestador?.direccion],
+    });
   }
 
   calcularPorcentaje(puntuacion: number | undefined): string {

@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { OfertaServicio } from './oferta-registro.servicio';
 import { StorageService } from 'src/app/shared/storage.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AlertaServicio } from 'src/app/services/alertas-errores.servicio';
 
 @Component({
   selector: 'app-registro-oferta',
@@ -21,7 +22,8 @@ export class OfertaRegistroPage implements OnInit{
     private route: ActivatedRoute,
     private router: Router,
     private storageServicio: StorageService,
-    private ofertaServicio: OfertaServicio
+    private ofertaServicio: OfertaServicio,
+    private alerta: AlertaServicio
   ) {
     this.ofertaForm = this.fb.group({
       descripcion: ['', Validators.required],
@@ -52,24 +54,26 @@ export class OfertaRegistroPage implements OnInit{
   }
 
   registrarOferta() {
-    if (this.ofertaForm.valid) {
-      const datos = this.ofertaForm.getRawValue();
-  
-      this.ofertaServicio.registrarOferta(datos).subscribe({
-        next: (res) => {
-          console.log('Oferta registrada con éxito:', res);
-          this.router.navigateByUrl('/oferta/todas/' + this.idServicio)
-          .then(() => {
-          window.location.reload();
-  });
-
-        },
-        error: (err) => {
-          console.error('Error al registrar la oferta:', err);
-        }
-      });
+    if (!this.ofertaForm.valid) {
+      this.alerta.mostrarError({ message: 'Por favor completa todos los campos requeridos.' });
+      return;
     }
-  }  
+
+    const datos = this.ofertaForm.getRawValue();
+
+    this.ofertaServicio.registrarOferta(datos).subscribe({
+      next: () => {
+        this.alerta.mostrarExito('Oferta registrada con éxito');
+        this.router.navigateByUrl('/oferta/todas/' + this.idServicio)
+        .then(() => {
+          window.location.reload();
+        });
+      },
+      error: (err) => {
+        this.alerta.mostrarError(err, 'Error al registrar la oferta');
+      }
+    });
+  }
 
   regresar() {
     this.router.navigateByUrl(`/servicio/todos`)

@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ServicioConsulta } from '../consulta-servicio/consulta-servicio.servicio';
+import { ServicioAccion } from '../consulta-servicio/consulta-servicio.servicio';
 import { Router } from '@angular/router';
 import { StorageService } from 'src/app/shared/storage.service';
+import { AlertaServicio } from 'src/app/services/alertas-errores.servicio';
 
 @Component({
   selector: 'app-consulta-servicio',
@@ -15,13 +16,15 @@ export class ConsultaServicioPage{
   serviciosPorPagina = 3;
   totalPaginas = 0;
   identificacionUsuario: string = '';
-  estadoServicioSolicitante: string = 'En transcurso';
-  estadoServicioPrestador: string = 'Finalizado';
+  estadoServicioTrancurso: string = 'En transcurso';
+  estadoServicioNuevo: string = 'Nuevo';
+  estadoServicioBorrador: string = 'En Borrador';
+  estadoServicioFinalizado: string = 'Finalizado';
 
-  constructor(private servicioConsulta: ServicioConsulta, 
+  constructor(private servicioAccion: ServicioAccion, 
     private router: Router, 
-    private storageServicio: StorageService
-
+    private storageServicio: StorageService,
+    private alerta: AlertaServicio
   ) {}
   
 
@@ -30,7 +33,7 @@ export class ConsultaServicioPage{
   }
 
   async prepararVista() {
-    await this.obtenerRol();         
+    await this.obtenerDatosToken();         
     this.cargarServicios();          
   }
 
@@ -42,8 +45,13 @@ export class ConsultaServicioPage{
 
   }
 
-  cargarServicios() { 
-    this.servicioConsulta.servicioTodoPaginado(this.paginaActual, this.serviciosPorPagina).subscribe({
+
+  cargarServicios() {  
+    const observable = this.rolUsuario === 'solicitante'
+      ? this.servicioAccion.servicioTodoPaginadoPorSolicitante(this.paginaActual, this.serviciosPorPagina, this.identificacionUsuario)
+      : this.servicioAccion.servicioTodoPaginado(this.paginaActual, this.serviciosPorPagina);
+  
+    observable.subscribe({
       next: (res) => {
         this.servicios = res.contenidoPagina;
         this.totalPaginas = res.totalPaginas;
@@ -52,9 +60,10 @@ export class ConsultaServicioPage{
         console.error("Error al cargar los servicios:", i);
         i.error && console.error("Detalles del error:", i.error);
         i.status && console.error("Estado del error:", i.status);
-      },    
+      },
     });
   }
+  
 
   verPaquetes(servicio: any) {
     const idServicio = servicio.idServicio;
@@ -91,14 +100,17 @@ export class ConsultaServicioPage{
   });
   }
 
-    async obtenerRol() {
-      const token = await this.storageServicio.obtener('token');
-      console.log('Token obtenido:', token);
-      if (token) {
-        const payload = JSON.parse(atob(token.split('.')[1]));
-        this.rolUsuario = payload.rol;
-      }
+  async obtenerDatosToken() {
+    const token = await this.storageServicio.obtener('token');
+    if (token) {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      this.rolUsuario = payload.rol;
+      this.identificacionUsuario = payload.numeroIdentificacion;
+      console.log('Rol:', this.rolUsuario);
+      console.log('Número de identificación:', this.identificacionUsuario);
     }
+  }
+  
   
     siguientePagina() {
       if (this.paginaActual + 1 < this.totalPaginas) {
@@ -158,11 +170,38 @@ export class ConsultaServicioPage{
 
     coultarBotonServicioTranscurso(servicio: any): boolean {
       return this.rolUsuario === 'solicitante' && 
-             servicio.estadoServicio === this.estadoServicioSolicitante;
+             servicio.estadoServicio === this.estadoServicioTrancurso;
     }
 
     coultarBotonServicioTranscursoPrestador(servicio: any): boolean {
       return this.rolUsuario === 'prestador' && 
-             servicio.estadoServicio !== this.estadoServicioPrestador;
+             (servicio.estadoServicio === this.estadoServicioNuevo);
+    }
+
+    coultarBotonServicioFinalizado(servicio: any): boolean {
+      return this.rolUsuario === 'prestador' && 
+             (servicio.estadoServicio === this.estadoServicioFinalizado);
+    }
+
+    elimincacionServicioLogico(servicio: any){
+      this.servicioAccion.eliminarServicioLogico(servicio.idServicio, {
+        estadoServicio: 'Eliminado'   
+      }).subscribe({
+        next: () => {
+          this.alerta.mostrarMensaje('Éxito', 'El servicio fue eliminado correctamente');
+          this.router.navigateByUrl('/servicio/todos').then(() => {
+            window.location.reload()});
+        },
+        error: (err) => {
+          console.error('Error al eliminar servicio:', err);
+          this.alerta.mostrarError(err, 'Error al eliminar el servicio');
+        }
+      });
+    }
+
+    validarEliminacionLogica(servicio: any): boolean{
+      return this.rolUsuario === 'solicitante' &&
+      (servicio.estadoServicio === this.estadoServicioNuevo ||
+       servicio.estadoServicio === this.estadoServicioBorrador);   
     }
 }

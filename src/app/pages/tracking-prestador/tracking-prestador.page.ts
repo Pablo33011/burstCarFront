@@ -5,6 +5,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { MapaSelectorComponent } from 'src/app/shared/mapa-selector/mapa-selector.component';
 import { FirebaseTrackingServicio } from 'src/app/shared/tracking/firebase-tracking.servicio';
 import { EstadoServicio } from './servicio-actualizar-estado.servicio';
+import { AlertaServicio } from 'src/app/services/alertas-errores.servicio';
 
 @Component({
   selector: 'app-tracking-prestador',
@@ -32,7 +33,8 @@ export class TrackingPrestadorPage implements OnInit {
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private estadoServicio: EstadoServicio
+    private estadoServicio: EstadoServicio,
+    private alerta: AlertaServicio
   ) {
     this.dummyForm = this.fb.group({
       latitud: [''],
@@ -69,7 +71,7 @@ export class TrackingPrestadorPage implements OnInit {
       this.puedeCambiarEstadoEnOrigen = distanciaOrigen <= 50; 
       this.puedeFinalizarRecorrido = distanciaDestino <= 50;
     } catch (error) {
-      console.error('Error obteniendo ubicación actual:', error);
+      this.alerta.mostrarError(error, 'No se pudo obtener tu ubicación');
     }
   }  
 
@@ -91,7 +93,7 @@ export class TrackingPrestadorPage implements OnInit {
 
   async iniciarRecorrido() {
     if (!this.puedeIniciarRecorrido) {
-      alert('Debes estar en el punto de origen para iniciar el tracking.');
+      this.alerta.mostrarError({ message: 'Debes estar en el punto de origen para iniciar el recorrido.' });
       return;
     }
     this.trackingActivo = true;
@@ -117,13 +119,17 @@ export class TrackingPrestadorPage implements OnInit {
       Geolocation.clearWatch({ id: this.watchId });
       await this.firebaseTracking.eliminarTracking(this.servicioId);
     }
-    this.estadoServicio.actualizarEstadoServicio(this.servicioId, { estadoServicio: 'Finalizado' }).subscribe({
-      next: () => console.log('Estado cambiado a Finalizado'),
-      error: (err) => console.error('Error cambiando estado:', err)
-    });
 
-    this.router.navigate(['/servicio/todos']).then(() => {
-      window.location.reload();
+    this.estadoServicio.actualizarEstadoServicio(this.servicioId, { estadoServicio: 'Finalizado' }).subscribe({
+      next: () => {
+        this.alerta.mostrarExito('El recorrido fue finalizado exitosamente');
+        this.router.navigate(['/servicio/todos']).then(() => {
+          window.location.reload();
+        });
+      },
+      error: (err) => {
+        this.alerta.mostrarError(err, 'Error al finalizar el recorrido');
+      }
     });
   }
 
@@ -140,16 +146,18 @@ export class TrackingPrestadorPage implements OnInit {
       this.firebaseTracking.actualizarUbicacion(this.servicioId, nuevoLat, nuevoLng);
       this.mapaSelector.moverMarcador(nuevoLat, nuevoLng);
     }, 2000);
+
+    this.alerta.mostrarMensaje('Simulación activada', 'Moviendo el marcador automáticamente.');
   } 
 
   cambiarEstadoServicioEnOrigen() {
     const esatdo = { estadoServicio: 'En transcurso' };
     this.estadoServicio.actualizarEstadoServicio(this.servicioId, esatdo).subscribe({
       next: () => {
-        console.log('Estado actualizado correctamente');
+        this.alerta.mostrarExito('Servicio en transcurso');
       },
       error: (err) => {
-        console.error('Error al actualizar estado', err);
+        console.error('Error al iniciar el transcurso', err);
       }
     });
   } 

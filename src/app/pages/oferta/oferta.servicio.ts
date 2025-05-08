@@ -21,6 +21,12 @@ export class OfertaConsultaServicio {
     return this.http.get<any>(url);
   }
 
+  obtenerOfertasPorServicioYPorPrestador(idServicio: string, idPrestador: string,
+    pagina: number, cantidad: number): Observable<any> {
+    const url = `${this.urlApiBase}/${idServicio}/prestador/${idPrestador}?pagina=${pagina}&cantidad=${cantidad}`;
+    return this.http.get<any>(url);
+  }
+
   consultarServicioPorId(idServicio: string): Observable<any> {
     const url = `${this.urlApiBaseConsultaServicio}/${idServicio}`;
     return this.http.get<any>(url);

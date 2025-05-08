@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { StorageService } from 'src/app/shared/storage.service';
 import { OfertaConsultaServicio } from './oferta.servicio';
+import { AlertaServicio } from 'src/app/services/alertas-errores.servicio';
 
 @Component({
   selector: 'app-consulta-oferta',
@@ -23,7 +24,8 @@ export class OfertaConsultaPage implements OnInit{
   constructor(private route: ActivatedRoute,
     private ofertaConsulta: OfertaConsultaServicio, 
     private router: Router,
-    private storageServicio: StorageService
+    private storageServicio: StorageService,
+    private alerta: AlertaServicio
   ) {}
 
 
@@ -51,18 +53,22 @@ export class OfertaConsultaPage implements OnInit{
     }
   }
 
-  obtenerOfertas() {
-    this.ofertaConsulta.obtenerOfertasPorServicio(this.idServicio, this.paginaActual, this.cantidadPorPagina).subscribe({
+  obtenerOfertas() {  
+    const observable = (this.rolUsuario === 'prestador' && this.idUsuario)
+      ? this.ofertaConsulta.obtenerOfertasPorServicioYPorPrestador(this.idServicio, this.idUsuario, this.paginaActual, this.cantidadPorPagina)
+      : this.ofertaConsulta.obtenerOfertasPorServicio(this.idServicio, this.paginaActual, this.cantidadPorPagina);
+  
+    observable.subscribe({
       next: (res) => {
         this.ofertas = res.contenidoPagina;
         this.totalPaginas = res.totalPaginas;
         this.paginaActual = res.paginaActual;
       },
       error: (err) => {
-        console.error('Error al cargar ofertas:', err);
+        this.alerta.mostrarError(err, 'No se pudieron cargar las ofertas');
       }
     });
-  }
+  }  
 
   crearOferta() {
     this.router.navigateByUrl(`oferta/nueva/servicio/${this.idServicio}`)
@@ -103,29 +109,25 @@ export class OfertaConsultaPage implements OnInit{
            oferta.estadoOferta !== this.ofertaPermitida;
   }
   
-
-  aceptarOferta(oferta : any){
-    const estado = { estadoOferta: 'Oferta aceptada' };
-    this.ofertaConsulta.actualizarEstadoSolicitante(oferta.idOferta, estado).subscribe({
+  private actualizarEstadoOferta(oferta: any, estado: string) {
+    const nuevoEstado = { estadoOferta: estado };
+    this.ofertaConsulta.actualizarEstadoSolicitante(oferta.idOferta, nuevoEstado).subscribe({
       next: () => {
-        console.log('Estado actualizado correctamente');
+        this.alerta.mostrarExito(`Oferta ${estado.toLowerCase()}`);
+        this.obtenerOfertas();
       },
       error: (err) => {
-        console.error('Error al actualizar estado', err);
+        this.alerta.mostrarError(err, `Error al ${estado.toLowerCase()}`);
       }
     });
   }
 
+  aceptarOferta(oferta : any){
+    this.actualizarEstadoOferta(oferta, 'Oferta aceptada');
+  }
+
   rechazarOferta(oferta : any){
-    const estado = { estadoOferta: 'Oferta rechazada' };
-    this.ofertaConsulta.actualizarEstadoSolicitante(oferta.idOferta, estado).subscribe({
-      next: () => {
-        console.log('Estado actualizado correctamente');
-      },
-      error: (err) => {
-        console.error('Error al actualizar estado', err);
-      }
-    });
+    this.actualizarEstadoOferta(oferta, 'Oferta rechazada');
   }
 
   iniciarRecorridoPrestador(oferta: any) {  
@@ -148,7 +150,7 @@ export class OfertaConsultaPage implements OnInit{
         })
       },
       error: (error) => {
-        console.error('Error al consultar el servicio:', error);
+        this.alerta.mostrarError(error, 'No se pudo cargar el servicio para iniciar el recorrido');
       }
     });
   }

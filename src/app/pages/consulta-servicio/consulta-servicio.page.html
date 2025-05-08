@@ -37,7 +37,7 @@
           <ion-button expand="block" fill="solid" color="tertiary" class="map-button-light" (click)="verPaquetes(servicio)">
             Ver paquetes asociados
           </ion-button>
-          <ion-button *ngIf="servicio.estadoServicio !== estadoServicio" expand="block" fill="solid" color="tertiary" class="map-button-light" (click)="verOfertas(servicio)">
+          <ion-button *ngIf=" !coultarBotonServicioFinalizado(servicio)" expand="block" fill="solid" color="tertiary" class="map-button-light" (click)="verOfertas(servicio)">
             Ver ofertas
           </ion-button>
           <ion-button *ngIf="coultarBotonServicioTranscurso(servicio)" expand="block" fill="solid" color="warning" class="map-button-light" (click)="actualizarServicio(servicio)">
@@ -45,6 +45,9 @@
           </ion-button>
           <ion-button *ngIf="coultarBotonServicioTranscursoPrestador(servicio)" expand="block" fill="solid" color="warning" class="map-button-light" (click)="verRecorrido(servicio)">
             Iniciar servicio sin ofertar
+          </ion-button>
+          <ion-button *ngIf="validarEliminacionLogica(servicio)" expand="block" fill="solid" color="warning" class="map-button-light" (click)="elimincacionServicioLogico(servicio)">
+            Eliminar
           </ion-button>
         </div>
       </ion-card-content>

@@ -35,5 +35,6 @@ export const endpointEnviroment = {
   peticionConsultaPrestador: 'http://localhost:8889/prestador',
   peticionActualizarEstadoServicioEnRecorrido: 'http://localhost:8889/servicio',
   peticionConsultarServicioPoId: 'http://localhost:8889/servicio/informacion',
-  peticionActualizarEstadoOferta: 'http://localhost:8889/servicio/oferta'
+  peticionActualizarEstadoOferta: 'http://localhost:8889/servicio/oferta',
+  peticionRegistrarCalificacion: 'http://localhost:8889/prestador'
 }  

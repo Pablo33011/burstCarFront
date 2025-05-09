@@ -3,12 +3,12 @@
       <ion-title class="custom-header-title">Información del Prestador</ion-title>
     </ion-toolbar>
   </ion-header>
-  <div class="consulta-container">
-    <ion-button expand="block" fill="solid" color="success" class="map-button-dark" (click)="regresar()">
-      regresar
-    </ion-button>
-  </div>
   <ion-content class="consulta-background">
+    <div class="consulta-container">
+      <ion-button expand="block" fill="solid" color="success" class="map-button-dark" (click)="regresar()">
+        regresar
+      </ion-button>
+    </div>
     <div class="consulta-container">
       <ion-card class="servicio-card">
         <ion-card-header class="card-header">
@@ -48,6 +48,13 @@
             - {{ cal.comentario }}
           </li>
         </ul>
+
+        <div class="consulta-container">
+          <ion-button 
+          expand="block" fill="solid" color="success" class="map-button-light" (click)="botonCrearCalificacion()">
+            calificar
+          </ion-button>
+        </div>
                         
         </ion-card-content>
       </ion-card>

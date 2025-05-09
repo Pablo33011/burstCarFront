@@ -3,7 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { PrestadorConsultaServicio } from './prestador.servicio';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MapaSelectorComponent } from 'src/app/shared/mapa-selector/mapa-selector.component';
-import { AlertaServicio } from 'src/app/services/alertas-errores.servicio';
 
 @Component({
   selector: 'app-consulta-prestador',
@@ -20,8 +19,7 @@ export class PrestadorConsultaPage implements OnInit{
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private prestadorService: PrestadorConsultaServicio,
-    private router: Router,
-    private alerta: AlertaServicio
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -58,6 +56,13 @@ export class PrestadorConsultaPage implements OnInit{
 
   regresar() {
     this.router.navigateByUrl(`/servicio/todos`)
+    .then(() => {
+    window.location.reload();
+  });
+  }
+
+  botonCrearCalificacion(){
+    this.router.navigateByUrl(`/prestador/calificacion/${this.prestador.numeroIdentificacion}`)
     .then(() => {
     window.location.reload();
   });

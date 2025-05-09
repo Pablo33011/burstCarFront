@@ -42,7 +42,6 @@ ion-card p {
   font-weight: bold;
 }
 
-// Estilos base reutilizables para botones
 .map-button-base {
   font-weight: 600;
   --border-radius: 8px;
@@ -71,25 +70,25 @@ ion-card p {
   --color: #232020;
 }
 
-.paginacion-bloque {
-  margin: 24px auto;
+.estrellas-container {
+  display: flex;
+  justify-content: start;
+  gap: 8px;
+  font-size: 32px; 
+  color: #d3d3d3; 
+  cursor: pointer;
 }
 
-.pagina-indicador {
-  margin: 0;
-  font-size: 1rem;
-  font-weight: 600;
-  color: #f3f3e4;
-  text-align: center;
+.estrella {
+  font-size: 28px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
 }
 
-ion-button {
-  --background: #f3f3e4;
-  --color: #232020;
-  --border-radius: 8px;
-  font-weight: bold;
+.estrella:hover {
+  transform: scale(1.2);
 }
 
-ion-button[disabled] {
-  opacity: 0.5;
+.estrellas-container .estrella.estrella-activa {
+  color: #ffd700; 
 }

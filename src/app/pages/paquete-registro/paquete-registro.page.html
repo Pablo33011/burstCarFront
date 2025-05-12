@@ -30,20 +30,19 @@
           <ion-input type="number" formControlName="valorAproximado"></ion-input>
         </ion-item>
 
-        <ion-item>
-          <ion-label position="stacked">Moneda</ion-label>
-          <ion-input formControlName="monedaPaquete"></ion-input>
-        </ion-item>
+        <ion-select formControlName="monedaPaquete" interface="popover" placeholder="Seleccione una moneda">
+          <ion-select-option value="COP">COP - Peso colombiano</ion-select-option>
+        </ion-select>  
 
         <ion-item>
           <ion-label position="stacked">Peso</ion-label>
           <ion-input type="number" formControlName="valorPeso"></ion-input>
         </ion-item>
 
-        <ion-item>
-          <ion-label position="stacked">Medida (ej: Kilogramo)</ion-label>
-          <ion-input formControlName="nombreMedida"></ion-input>
-        </ion-item>
+
+        <ion-select formControlName="nombreMedida" interface="action-sheet" placeholder="Medida (ej: Kilogramo)" class="login-input">
+          <ion-select-option value="kg">Kilogramo</ion-select-option>
+        </ion-select>
 
         <ion-item>
           <ion-label position="stacked">Descripción del paquete</ion-label>

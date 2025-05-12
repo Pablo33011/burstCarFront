@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ServicioAccion } from '../consulta-servicio/consulta-servicio.servicio';
 import { Router } from '@angular/router';
 import { StorageService } from 'src/app/shared/storage.service';
 import { AlertaServicio } from 'src/app/services/alertas-errores.servicio';
+import { Geolocation } from '@capacitor/geolocation';
+import { LocalNotifications } from '@capacitor/local-notifications';
 
 @Component({
   selector: 'app-consulta-servicio',
@@ -20,6 +22,9 @@ export class ConsultaServicioPage{
   estadoServicioNuevo: string = 'Nuevo';
   estadoServicioBorrador: string = 'En Borrador';
   estadoServicioFinalizado: string = 'Finalizado';
+  latitud!: number;
+  longitud!: number;
+
 
   constructor(private servicioAccion: ServicioAccion, 
     private router: Router, 
@@ -34,7 +39,9 @@ export class ConsultaServicioPage{
 
   async prepararVista() {
     await this.obtenerDatosToken();         
-    this.cargarServicios();          
+    await this.obtenerUbicacionActual();         
+    this.cargarServicios();     
+    await LocalNotifications.requestPermissions();     
   }
 
   crearServicio() {
@@ -45,24 +52,52 @@ export class ConsultaServicioPage{
 
   }
 
+  private async obtenerUbicacionActual() {
+    if(this.rolUsuario === 'prestador'){
+      try {
+        const position = await Geolocation.getCurrentPosition();
+        this.latitud = position.coords.latitude;
+        this.longitud = position.coords.longitude;
+        console.log('Ubicación obtenida:', this.latitud, this.longitud);
+      } catch (error) {
+        this.alerta.mostrarError({ message: 'No se pudo obtener tu ubicación. Activa el GPS.' });
+      }
+    }
+}
 
-  cargarServicios() {  
-    const observable = this.rolUsuario === 'solicitante'
-      ? this.servicioAccion.servicioTodoPaginadoPorSolicitante(this.paginaActual, this.serviciosPorPagina, this.identificacionUsuario)
-      : this.servicioAccion.servicioTodoPaginado(this.paginaActual, this.serviciosPorPagina);
-  
-    observable.subscribe({
-      next: (res) => {
-        this.servicios = res.contenidoPagina;
-        this.totalPaginas = res.totalPaginas;
-      },
-      error: (i) => {
-        console.error("Error al cargar los servicios:", i);
-        i.error && console.error("Detalles del error:", i.error);
-        i.status && console.error("Estado del error:", i.status);
-      },
-    });
-  }
+
+cargarServicios() {  
+  const observable = this.rolUsuario === 'solicitante'
+    ? this.servicioAccion.servicioTodoPaginadoPorSolicitante(this.paginaActual, this.serviciosPorPagina, this.identificacionUsuario)
+    : this.servicioAccion.servicioTodoPaginado(this.latitud, this.longitud, this.paginaActual, this.serviciosPorPagina);
+
+  observable.subscribe({
+    next: async (res) => {
+      this.servicios = res.contenidoPagina;
+      this.totalPaginas = res.totalPaginas;
+
+      if (this.rolUsuario === 'prestador' && this.servicios.length > 0) {
+        await LocalNotifications.schedule({
+          notifications: [{
+            title: 'Servicios cercanos disponibles',
+            body: `Hay ${this.servicios.length} servicios cerca de ti.`,
+            id: new Date().getTime(),
+            schedule: { at: new Date(new Date().getTime() + 3000) }, 
+            sound: null,
+            smallIcon: 'ic_stat_icon_config_sample',
+            attachments: null,
+            actionTypeId: '',
+            extra: null
+          }]
+        });
+      }
+    },
+    error: (i) => {
+      console.error("Error al cargar los servicios:", i);
+      i.error && this.alerta.mostrarError("Detalles del error:", i.error);
+    },
+  });
+}
   
 
   verPaquetes(servicio: any) {
@@ -148,13 +183,28 @@ export class ConsultaServicioPage{
       });
     }
 
-    verRecorridoSolicitante(servicio: any) {
+    async verRecorridoSolicitante(servicio: any) {
       const idServicio = servicio.idServicio;
       const latitudOrigen = servicio.latituUbicacion;
       const longitudOrigen = servicio.longitudUbicacion;
       const latitudDestino = servicio.latitudDestinoUbicacion; 
       const longitudDestino = servicio.longitudDestinoUbicacion;
-    
+
+      if (this.rolUsuario === 'solicitante') {
+        await LocalNotifications.schedule({
+          notifications: [
+            {
+              title: '¡Tu servicio ha comenzado!',
+              body: `El prestador ha iniciado el recorrido para el servicio #${idServicio}.`,
+              id: new Date().getTime(),
+              schedule: { at: new Date(new Date().getTime() + 1000) },
+              sound: null,
+               smallIcon: 'ic_stat_icon_config_sample',
+            },
+          ],
+        });
+      }
+      
       this.router.navigate(
         ['/tracking/solicitante', idServicio], {
         queryParams: {

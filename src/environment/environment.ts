@@ -12,11 +12,39 @@ export const environment = {
   }
 };
 
+/*export const endpointEnviroment = {
+  loginPrestador: 'http://10.0.2.2:8889/prestador/sesion',
+  loginSolicitante: 'http://10.0.2.2:8889/solicitante/sesion', 
+  peticionConsultaServicioTodos: 'http://10.0.2.2:8889/servicio/todos/95674536-47ba-43af-8161-f329df3a04e7',
+  peticionConsultaServicioTodosPorSolicitante: 'http://10.0.2.2:8889/servicio/todos/95674536-47ba-43af-8161-f329df3a04e7/solicitante',
+  peticionEliminarServicioLogico: 'http://10.0.2.2:8889/servicio',
+  peticionCambiarServicioANuevo: 'http://10.0.2.2:8889/servicio',
+  peticionConsultaOfertaTodos: 'http://10.0.2.2:8889/servicio/oferta/todos',
+  peticionConsultarPaquete: 'http://10.0.2.2:8889/paquete/servicio',
+  peticionConsultaPesoContenido: 'http://10.0.2.2:8889/paquete/peso/contenido',
+  peticionRegistrarContenido: 'http://10.0.2.2:8889/paquete/contenido/nuevo',
+  peticionRegistrarPeso: 'http://10.0.2.2:8889/paquete/peso/nuevo',
+  peticionRegistrarPaquete: 'http://10.0.2.2:8889/paquete/nuevo',
+  peticionRegistrarUbicacion: 'http://10.0.2.2:8889/servicio/ubicacion/nuevo',
+  peticionRegistrarDestino: 'http://10.0.2.2:8889/servicio/destino/nuevo',
+  peticionRegistrarServicio: 'http://10.0.2.2:8889/servicio/nuevo',
+  peticionRegistrarOferta: 'http://10.0.2.2:8889/servicio/oferta/nueva',
+  peticionRegistrarSolicitante: 'http://10.0.2.2:8889/solicitante/nuevo',
+  peticionRegistrarPrestador: 'http://10.0.2.2:8889/prestador/nuevo',
+  peticionRegistrarUbicacionPrestador: 'http://10.0.2.2:8889/prestador/ubicacion/nuevo',
+  peticionConsultaPrestador: 'http://10.0.2.2:8889/prestador',
+  peticionActualizarEstadoServicioEnRecorrido: 'http://10.0.2.2:8889/servicio',
+  peticionConsultarServicioPoId: 'http://10.0.2.2:8889/servicio/informacion',
+  peticionActualizarEstadoOferta: 'http://10.0.2.2:8889/servicio/oferta',
+  peticionRegistrarCalificacion: 'http://10.0.2.2:8889/prestador'
+}  */
+
+
 export const endpointEnviroment = {
   loginPrestador: 'http://localhost:8889/prestador/sesion',
   loginSolicitante: 'http://localhost:8889/solicitante/sesion', 
-  peticionConsultaServicioTodos: 'http://localhost:8889/servicio/todos/95674536-47ba-43af-8161-f329df3a04e7',
-  peticionConsultaServicioTodosPorSolicitante: 'http://localhost:8889/servicio/todos/95674536-47ba-43af-8161-f329df3a04e7/solicitante',
+  peticionConsultaServicioTodos: 'http://localhost:8889/servicio/todos',
+  peticionConsultaServicioTodosPorSolicitante: 'http://localhost:8889/servicio/todos/solicitante',
   peticionEliminarServicioLogico: 'http://localhost:8889/servicio',
   peticionCambiarServicioANuevo: 'http://localhost:8889/servicio',
   peticionConsultaOfertaTodos: 'http://localhost:8889/servicio/oferta/todos',

@@ -4,6 +4,7 @@ import { OfertaServicio } from './oferta-registro.servicio';
 import { StorageService } from 'src/app/shared/storage.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AlertaServicio } from 'src/app/services/alertas-errores.servicio';
+import { LocalNotifications } from '@capacitor/local-notifications';
 
 @Component({
   selector: 'app-registro-oferta',
@@ -41,7 +42,24 @@ export class OfertaRegistroPage implements OnInit{
     this.idServicio = this.route.snapshot.paramMap.get('id')!;
     this.ofertaForm.patchValue({ servicio: this.idServicio });
     this.obtenerIdentificacion();
+    this.ofertaForm.get('fechaInicio')?.valueChanges.subscribe(() => this.calcularCostoAutomatico());
+    this.ofertaForm.get('fechaFin')?.valueChanges.subscribe(() => this.calcularCostoAutomatico());
   }
+
+  calcularCostoAutomatico() {
+  const fechaInicio = new Date(this.ofertaForm.get('fechaInicio')?.value);
+  const fechaFin = new Date(this.ofertaForm.get('fechaFin')?.value);
+
+  if ((fechaInicio && fechaFin) && (fechaFin > fechaInicio)) {
+    const diferenciaHoras = (fechaFin.getTime() - fechaInicio.getTime()) / (1000 * 60 * 60);
+    const costoCalculado = Math.ceil(diferenciaHoras) * 5000;
+
+    this.ofertaForm.patchValue({
+      costo: costoCalculado
+    }, { emitEvent: false });
+  }
+}
+
 
   async obtenerIdentificacion() {
     const token = await this.storageServicio.obtener('token');
@@ -62,8 +80,25 @@ export class OfertaRegistroPage implements OnInit{
     const datos = this.ofertaForm.getRawValue();
 
     this.ofertaServicio.registrarOferta(datos).subscribe({
-      next: () => {
+      next: async() => {
         this.alerta.mostrarExito('Oferta registrada con éxito');
+
+      await LocalNotifications.schedule({
+        notifications: [
+          {
+            title: '¡Nueva oferta disponible!',
+            body: `Un prestador ha enviado una oferta para tu servicio #${this.idServicio}`,
+            id: new Date().getTime(),
+            schedule: { at: new Date(new Date().getTime() + 1000) },
+            sound: null,
+            smallIcon: 'ic_stat_icon_config_sample',
+            attachments: null,
+            actionTypeId: '',
+            extra: null
+          }
+        ]
+      });
+
         this.router.navigateByUrl('/oferta/todas/' + this.idServicio)
         .then(() => {
           window.location.reload();

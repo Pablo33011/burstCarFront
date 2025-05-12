@@ -35,10 +35,9 @@
             <ion-input type="number" formControlName="costoInicial"></ion-input>
           </ion-item>
 
-          <ion-item>
-            <ion-label position="stacked">Moneda</ion-label>
-            <ion-input formControlName="moneda"></ion-input>
-          </ion-item>
+          <ion-select formControlName="moneda" interface="popover" placeholder="Seleccione una moneda">
+            <ion-select-option value="COP">COP - Peso colombiano</ion-select-option>
+          </ion-select>
         </div>
 
         <div *ngIf="pasoActual === 2">

@@ -19,9 +19,13 @@ export class LoginPage {
   loginForm: FormGroup;
   errorMessage: string = '';
 
-  constructor(private fb: FormBuilder, private router: Router, private loginServicio: LoginServicio,
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private loginServicio: LoginServicio,
     private storageService: StorageService,
-    private alerta: AlertaServicio){
+    private alerta: AlertaServicio
+  ){
       this.loginForm = this.fb.group({
         usuario: ['', Validators.required],
         contrasena: ['', Validators.required],
@@ -29,6 +33,7 @@ export class LoginPage {
       });
       
   }
+
   private async validarLocalizacion(): Promise<boolean> {
     try {
       const { lat, lng } = await this.obtenerLocalizacionActual();
@@ -60,13 +65,13 @@ export class LoginPage {
   }
 
   async onSubmit() {
-    if (!this.loginForm.valid) {
+    if (this.loginForm.invalid) {
       this.alerta.mostrarError({ message: 'Por favor completa todos los campos.' });
       return;
     }
-    if (!(await this.validarLocalizacion())) {
-      return;
-    }
+
+    const ubicacionValida = await this.validarLocalizacion();
+    if (!ubicacionValida) return;
 
     this.ejecutarLogin();
   }

@@ -18,16 +18,6 @@
             <ion-label position="stacked">Descripción</ion-label>
             <ion-input formControlName="descripcion"></ion-input>
           </ion-item>
-  
-          <ion-item>
-            <ion-label position="stacked">Costo</ion-label>
-            <ion-input type="number" formControlName="costo"></ion-input>
-          </ion-item>
-  
-          <ion-item>
-            <ion-label position="stacked">Moneda</ion-label>
-            <ion-input formControlName="monedaServicio"></ion-input>
-          </ion-item>
           
           <ion-item>
             <ion-label position="stacked">Fecha de inicio</ion-label>
@@ -41,7 +31,7 @@
               prefer-wheel="false"
             ></ion-datetime>
           </ion-item>
-          
+
           <ion-item>
             <ion-label position="stacked">Fecha de fin</ion-label>
             <ion-datetime
@@ -53,7 +43,16 @@
               color="tertiary"
               prefer-wheel="false"
             ></ion-datetime>
-          </ion-item>                    
+          </ion-item>    
+          
+          <ion-item>
+            <ion-label position="stacked">Costo</ion-label>
+            <ion-input type="number" formControlName="costo"></ion-input>
+          </ion-item>
+  
+          <ion-select formControlName="monedaServicio" interface="popover" placeholder="Seleccione una moneda">
+            <ion-select-option value="COP">COP - Peso colombiano</ion-select-option>
+          </ion-select>
   
           <ion-item>
             <ion-label position="stacked">Estado de la oferta</ion-label>

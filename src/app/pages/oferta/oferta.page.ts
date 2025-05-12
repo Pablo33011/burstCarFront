@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { StorageService } from 'src/app/shared/storage.service';
 import { OfertaConsultaServicio } from './oferta.servicio';
 import { AlertaServicio } from 'src/app/services/alertas-errores.servicio';
+import { LocalNotifications } from '@capacitor/local-notifications';
 
 @Component({
   selector: 'app-consulta-oferta',
@@ -112,15 +113,33 @@ export class OfertaConsultaPage implements OnInit{
   private actualizarEstadoOferta(oferta: any, estado: string) {
     const nuevoEstado = { estadoOferta: estado };
     this.ofertaConsulta.actualizarEstadoSolicitante(oferta.idOferta, nuevoEstado).subscribe({
-      next: () => {
+      next: async() => {
         this.alerta.mostrarExito(`Oferta ${estado.toLowerCase()}`);
         this.obtenerOfertas();
-      },
-      error: (err) => {
-        this.alerta.mostrarError(err, `Error al ${estado.toLowerCase()}`);
+
+      if (this.rolUsuario === 'prestador') {
+        await LocalNotifications.schedule({
+          notifications: [
+            {
+              title: `Tu oferta fue ${estado.toLowerCase()}`,
+              body: `Un solicitante ha ${estado === 'Oferta aceptada' ? 'aceptado' : 'rechazado'} tu oferta para el servicio #${oferta.servicio}`,
+              id: new Date().getTime(),
+              schedule: { at: new Date(new Date().getTime() + 6000) },
+              sound: null,
+              smallIcon: 'ic_stat_icon_config_sample',
+              attachments: null,
+              actionTypeId: '',
+              extra: null
+            }
+          ]
+        });
       }
-    });
-  }
+    },
+    error: (err) => {
+      this.alerta.mostrarError(err, `Error al ${estado.toLowerCase()}`);
+    }
+  });
+}
 
   aceptarOferta(oferta : any){
     this.actualizarEstadoOferta(oferta, 'Oferta aceptada');

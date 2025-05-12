@@ -20,7 +20,9 @@
       <ion-input formControlName="usuario" placeholder="Usuario" fill="outline" class="login-input"></ion-input>
       <ion-input formControlName="contrasena" type="password" placeholder="Contraseña" fill="outline" class="login-input"></ion-input>
       <ion-input formControlName="numeroTelefonico" type="number" placeholder="Teléfono" fill="outline" class="login-input"></ion-input>
-      <ion-input formControlName="categoriaIdentificador" placeholder="Tipo de ID (ej: CC)" fill="outline" class="login-input"></ion-input>
+      <ion-select formControlName="categoriaIdentificador" interface="action-sheet" placeholder="Tipo de documento (ej: CC)" class="login-input">
+          <ion-select-option value="CC">Cédula de ciudadanía</ion-select-option>
+      </ion-select>
       <ion-input formControlName="numeroIdentificacion" type="text" placeholder="Número de identificación" fill="outline" class="login-input"></ion-input>
 
       <ion-select

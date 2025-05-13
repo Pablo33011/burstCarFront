@@ -22,6 +22,11 @@
       <ion-input formControlName="numeroTelefonico" type="number" placeholder="Teléfono" fill="outline" class="login-input"></ion-input>
       <ion-select formControlName="categoriaIdentificador" interface="action-sheet" placeholder="Tipo de documento (ej: CC)" class="login-input">
           <ion-select-option value="CC">Cédula de ciudadanía</ion-select-option>
+          <ion-select-option value="TI">Tarjeta de Identidad</ion-select-option>
+          <ion-select-option value="CE">Cédula de Extranjería</ion-select-option>
+          <ion-select-option value="NIT">Identificación Tributaria</ion-select-option>
+          <ion-select-option value="PA">Pasaporte</ion-select-option>
+          <ion-select-option value="RC">Registro Civil</ion-select-option>
       </ion-select>
       <ion-input formControlName="numeroIdentificacion" type="text" placeholder="Número de identificación" fill="outline" class="login-input"></ion-input>
 
@@ -37,7 +42,7 @@
 
     <div *ngIf="esPrestador() && registroForm.get('ubicacion')" [formGroup]="registroForm.get('ubicacion')">
       <h3>Ubicación del prestador</h3>
-  
+    
       <ion-input formControlName="numeroVia" placeholder="Número de vía" fill="outline" class="login-input"></ion-input>
       <ion-input formControlName="direccion" placeholder="Dirección" fill="outline" class="login-input"></ion-input>
       <ion-input type="number" formControlName="latitud" placeholder="Latitud" fill="outline" class="login-input"></ion-input>
@@ -46,7 +51,20 @@
       <ion-input formControlName="detalleAdicional" placeholder="Detalle adicional" fill="outline" class="login-input"></ion-input>
       <ion-input formControlName="nombreDepartamento" placeholder="Nombre del departamento" fill="outline" class="login-input"></ion-input>
       <ion-input formControlName="nombreCiudad" placeholder="Nombre de la ciudad" fill="outline" class="login-input"></ion-input>
-      <ion-input formControlName="nombreCorregimiento" placeholder="Nombre del corregimiento" fill="outline" class="login-input"></ion-input>
+      
+      <ion-select formControlName="nombreCorregimiento" interface="popover" placeholder="Nombre del corregimiento">
+          <ion-select-option value="Santa Bárbara">Santa Bárbara</ion-select-option>
+          <ion-select-option value="El Tablazo">El Tablazo</ion-select-option>
+          <ion-select-option value="Barro Blanco">Barro Blanco</ion-select-option>
+          <ion-select-option value="La Laja">La Laja</ion-select-option>
+          <ion-select-option value="Abreo">Abreo</ion-select-option>
+          <ion-select-option value="Yarumal">Yarumal</ion-select-option>
+          <ion-select-option value="Chachafruto">Chachafruto</ion-select-option>
+          <ion-select-option value="El Capiro">El Capiro</ion-select-option>
+          <ion-select-option value="San Antonio">San Antonio</ion-select-option>
+          <ion-select-option value="La Playa">La Playa</ion-select-option>
+      </ion-select>
+
       <ion-input formControlName="nombreVia" placeholder="Nombre de la vía" fill="outline" class="login-input"></ion-input>
       <app-mapa-selector [formGroup]="registroForm.get('ubicacion')"></app-mapa-selector>
     </div>

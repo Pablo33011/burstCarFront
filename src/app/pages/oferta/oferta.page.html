@@ -1,0 +1,91 @@
+<ion-header class="custom-header">
+    <ion-toolbar color="primary">
+      <ion-title class="custom-header-title">Ofertas del servicio</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  
+  <ion-content class="consulta-background">
+    <div class="consulta-container">
+      <ion-button expand="block" fill="solid" color="success" class="map-button-dark" (click)="regresar()">
+        regresar
+      </ion-button>
+    </div>
+    <div class="consulta-container" *ngIf="rolUsuario === 'prestador'">
+      <ion-button expand="block" fill="solid" color="success" class="map-button-dark" (click)="crearOferta()">
+        Crear nueva oferta
+      </ion-button>
+    </div>
+    <ion-list *ngFor="let oferta of ofertas" class="consulta-container">
+      <ion-card class="servicio-card">
+        <ion-card-header class="card-header">
+          <ion-card-title>
+            <strong>Descripción:</strong> {{ oferta.descripcion }}
+          </ion-card-title>
+        </ion-card-header>
+  
+        <ion-card-content>
+          <p><strong>Estado:</strong> {{ oferta.estadoOferta }}</p>
+          <p><strong>Prestador:</strong> {{ oferta.prestadorServicio }}</p>
+          <p><strong>Costo:</strong> {{ oferta.costo | currency:oferta.monedaServicio }}</p>
+          <p><strong>Fecha inicio:</strong> {{ oferta.fechaInicio | date:'short' }}</p>
+          <p><strong>Fecha fin:</strong> {{ oferta.fechaFin | date:'short' }}</p>
+
+          <div class="map-buttons">
+            <ion-button expand="block" fill="solid" color="tertiary" class="map-button-light" (click)="verPrestador(oferta)">
+              Ver prestador
+            </ion-button>
+
+            <ion-button expand="block" fill="solid" color="success" class="map-button-light"
+            *ngIf="rolUsuario === 'prestador' && oferta.prestadorServicio === idUsuario && oferta.estadoOferta === ofertaPermitida"
+            (click)="iniciarRecorridoPrestador(oferta)">
+            Iniciar recorrido
+          </ion-button>
+
+          <ion-grid>
+            <ion-row class="ion-justify-content-between">
+    
+              <ion-col size="5">
+                <ion-button expand="block" color="success" class="map-button-light"
+                  *ngIf="mostrarBotonDeEstadoOferta(oferta)" 
+                  (click)="aceptarOferta(oferta)">
+                  Aceptar oferta
+                </ion-button>
+              </ion-col>
+    
+              <ion-col size="5">
+                <ion-button expand="block" color="success" class="map-button-light"
+                  *ngIf="mostrarBotonDeEstadoOferta(oferta)"
+                  (click)="rechazarOferta(oferta)">
+                  Rechazar oferta
+                </ion-button>
+              </ion-col>
+            </ion-row>
+      
+          </ion-grid>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </ion-list>
+  
+    <div class="consulta-container paginacion-bloque" *ngIf="totalPaginas > 1">
+      <ion-grid>
+        <ion-row class="ion-align-items-center ion-justify-content-between">
+          <ion-col size="4" class="ion-text-start">
+            <ion-button expand="block" fill="outline" (click)="anteriorPagina()" [disabled]="paginaActual === 0">
+              Anterior
+            </ion-button>
+          </ion-col>
+  
+          <ion-col size="4" class="ion-text-center">
+            <p class="pagina-indicador">Página {{ paginaActual + 1 }} de {{ totalPaginas }}</p>
+          </ion-col>
+  
+          <ion-col size="4" class="ion-text-end">
+            <ion-button expand="block" fill="outline" (click)="siguientePagina()" [disabled]="paginaActual + 1 >= totalPaginas">
+              Siguiente
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+  </ion-content>  

@@ -1,0 +1,42 @@
+<ion-header class="custom-header">
+  <ion-toolbar color="primary">
+    <ion-title class="custom-header-title">Registrar Calificación</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="consulta-background">
+  <form [formGroup]="calificacionForm" (ngSubmit)="registrarCalificacion()">
+    <ion-card class="servicio-card consulta-container">
+      <ion-card-content>
+
+        <ion-item lines="none">
+          <ion-label position="stacked">Calificación</ion-label>
+          <div class="estrellas-container">
+            <span *ngFor="let estrella of estrellas; let i = index"
+                  (click)="seleccionarEstrella(i + 1)"
+                  class="estrella"
+                  [ngClass]="{'estrella-activa': i < calificacionForm.get('valor')?.value}">
+              &#9733;
+            </span>
+          </div>
+        </ion-item> 
+        <ion-note color="danger" *ngIf="calificacionForm.get('valor')?.touched && calificacionForm.get('valor')?.invalid">
+          Debes seleccionar una calificación.
+        </ion-note>
+
+        <ion-item>
+          <ion-label position="stacked">Comentario</ion-label>
+          <ion-textarea formControlName="comentario" placeholder="Escribe tu opinión..."></ion-textarea>
+        </ion-item>
+        <ion-note color="danger" *ngIf="calificacionForm.get('comentario')?.touched && calificacionForm.get('comentario')?.invalid">
+          El comentario es obligatorio.
+        </ion-note>
+
+        <ion-button expand="block" type="submit" [disabled]="calificacionForm.invalid" class="map-button-dark">
+          Registrar Calificación
+        </ion-button>
+
+      </ion-card-content>
+    </ion-card>
+  </form>
+</ion-content>

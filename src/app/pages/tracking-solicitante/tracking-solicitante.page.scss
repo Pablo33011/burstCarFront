@@ -1,0 +1,37 @@
+.consulta-background {
+    --background: #f5f5f5;
+  }
+  
+  .consulta-container {
+    width: 90%;
+    margin: auto;
+    padding-top: 4vh;
+  }  
+
+    .map-button-base {
+    font-weight: 600;
+    --border-radius: 8px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .map-button-base:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+  
+  .map-button-base:active {
+    transform: scale(0.97);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  }
+  
+  .map-button-dark {
+    @extend .map-button-base;
+    --background: #6c8f6d;
+    --color: white;
+  }
+  
+  .map-button-light {
+    @extend .map-button-base;
+    --background: #f3f3e4;
+    --color: #232020;
+  }

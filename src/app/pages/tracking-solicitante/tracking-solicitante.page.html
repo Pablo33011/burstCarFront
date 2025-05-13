@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Tracking del Prestador</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="consulta-background">
+
+  <div class="consulta-container">
+    <ion-button expand="block" fill="solid" color="success" class="map-button-light" (click)="regresar()">
+      regresar
+    </ion-button>
+  </div>
+  <div class="consulta-container">
+    <app-mapa-selector 
+      [formGroup]="dummyForm" 
+      [soloLectura]="true"
+      [latitudOrigen]="latitudOrigen"
+      [longitudOrigen]="longitudOrigen"
+      [latitudDestino]="latitudDestino"
+      [longitudDestino]="longitudDestino">
+    </app-mapa-selector>
+  </div>
+</ion-content>

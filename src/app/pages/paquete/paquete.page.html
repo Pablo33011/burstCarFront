@@ -1,0 +1,82 @@
+<ion-header class="custom-header">
+  <ion-toolbar color="primary">
+    <ion-title class="custom-header-title">Paquetes asociados al servicio</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="consulta-background">
+    <div class="consulta-container" *ngIf="rolUsuario === 'solicitante'">
+      <ion-button expand="block" fill="solid" color="success" class="map-button-dark" (click)="crearPaquete()">
+        Crear nuevo paquete
+      </ion-button>
+    </div>
+
+    <div class="consulta-container">
+      <ion-button expand="block" fill="solid" color="success" class="map-button-dark" (click)="regresar()">
+        regresar
+      </ion-button>
+    </div>
+  
+    <ion-list *ngFor="let paquete of obtenerPaquetesPaginaActual()" class="consulta-container">
+      <ion-card class="servicio-card">
+        <ion-card-header class="card-header">
+          <ion-card-title><strong>Descripción del paquete:</strong> {{ paquete.descripcion }}</ion-card-title>
+        </ion-card-header>
+  
+        <ion-card-content>
+          <p><strong>Tipo de paquete:</strong> {{ paquete.tipoPaquete.nombre }}</p>
+          <p><strong>Descripción del tipo:</strong> {{ paquete.tipoPaquete.descripcion }}</p>
+          <p><strong>Contenido:</strong> {{ paquete.contenido.descripcion }}</p>
+          <p><strong>¿Es frágil?:</strong> {{ paquete.contenido.fragil ? 'Sí' : 'No' }}</p>
+          <p><strong>Valor aproximado:</strong> 
+            {{ paquete.contenido.valorAproximado | currency:paquete.contenido.monedaPaquete.codigoMoneda }}
+          </p>
+          <p><strong>Moneda:</strong> {{ paquete.contenido.monedaPaquete.nombreMoneda }} 
+            ({{ paquete.contenido.monedaPaquete.codigoMoneda }})
+          </p>
+  
+          <div class="map-buttons">
+            <ion-button expand="block" fill="solid" color="tertiary" class="map-button-light" (click)="verPeso(paquete.contenido)">
+              Ver peso
+            </ion-button>
+  
+            <ion-button *ngIf="rolUsuario === 'solicitante'" expand="block" fill="solid" color="warning" class="map-button-light"
+              (click)="actualizarPaquete(paquete)">
+              Actualizar
+            </ion-button>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </ion-list>
+
+    <div class="consulta-container" *ngIf="rolUsuario === 'solicitante'">
+      <ion-button expand="block" fill="solid" color="success" class="map-button-dark" (click)="publicarServicioBoton()" 
+        [disabled]="!publicarServicio">
+        Publicar servicio
+      </ion-button>
+    </div>    
+
+
+  <div class="consulta-container paginacion-bloque" *ngIf="paquetes.length > 0">
+  <ion-grid>
+    <ion-row class="ion-align-items-center ion-justify-content-between">
+      <ion-col size="4" class="ion-text-start">
+        <ion-button expand="block" fill="outline" class="map-button-light" (click)="anteriorPagina()" [disabled]="paginaActual === 1">
+          Anterior
+        </ion-button>
+      </ion-col>
+
+      <ion-col size="4" class="ion-text-center">
+        <p class="pagina-indicador">Página {{ paginaActual }} de {{ totalPaginas }}</p>
+      </ion-col>
+
+      <ion-col size="4" class="ion-text-end">
+        <ion-button expand="block" fill="outline" (click)="siguientePagina()" [disabled]="paginaActual * paquetesPorPagina >= paquetes.length">
+          Siguiente
+        </ion-button>
+      </ion-col>
+
+    </ion-row>
+  </ion-grid>
+</div>
+</ion-content>

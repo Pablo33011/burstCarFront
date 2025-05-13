@@ -1,0 +1,64 @@
+<ion-header class="custom-header">
+  <ion-toolbar color="primary">
+    <ion-title class="custom-header-title">Registrar nuevo paquete</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<div class="consulta-container">
+  <ion-button expand="block" fill="solid" color="success" class="map-button-light" (click)="regresar()">
+    regresar
+  </ion-button>
+</div>
+
+<ion-content class="consulta-background">
+  <form [formGroup]="paqueteForm" (ngSubmit)="registrarPaquete()">
+    <ion-card class="servicio-card consulta-container">
+      <ion-card-content>
+
+        <ion-item>
+          <ion-label position="stacked">Descripción del contenido</ion-label>
+          <ion-input formControlName="descripcionContenido"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">¿Es frágil?</ion-label>
+          <ion-toggle formControlName="fragil"></ion-toggle>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">Valor aproximado</ion-label>
+          <ion-input type="number" formControlName="valorAproximado"></ion-input>
+        </ion-item>
+
+        <ion-select formControlName="monedaPaquete" interface="popover" placeholder="Seleccione una moneda">
+          <ion-select-option value="COP">COP - Peso colombiano</ion-select-option>
+        </ion-select>  
+
+        <ion-item>
+          <ion-label position="stacked">Peso</ion-label>
+          <ion-input type="number" formControlName="valorPeso"></ion-input>
+        </ion-item>
+
+
+        <ion-select formControlName="nombreMedida" interface="action-sheet" placeholder="Medida (ej: Kilogramo)" class="login-input">
+          <ion-select-option value="kg">Kilogramo</ion-select-option>
+        </ion-select>
+
+        <ion-item>
+          <ion-label position="stacked">Descripción del paquete</ion-label>
+          <ion-input formControlName="descripcionPaquete"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">Tipo de paquete</ion-label>
+          <ion-input formControlName="tipoPaqueteNombre"></ion-input>
+        </ion-item>
+
+        <ion-button expand="block" type="submit" [disabled]="paqueteForm.invalid" class="map-button-dark">
+          Registrar paquete
+        </ion-button>
+
+      </ion-card-content>
+    </ion-card>
+  </form>
+</ion-content>

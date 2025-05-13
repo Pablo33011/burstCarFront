@@ -1,0 +1,82 @@
+<ion-header class="custom-header">
+  <ion-toolbar color="primary">
+    <ion-title class="custom-header-title">Servicios disponibles</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="consulta-background">
+  <div class="consulta-container" *ngIf="rolUsuario === 'solicitante'">
+    <ion-button expand="block" fill="solid" color="success" class="map-button-dark" (click)="crearServicio()">
+      Crear nuevo servicio
+    </ion-button>
+  </div>
+  <div class="consulta-container">
+    <ion-button expand="block" fill="solid" color="success" class="map-button-dark" (click)="regresar()">
+      regresar
+    </ion-button>
+  </div>
+  <ion-list *ngFor="let servicio of servicios " class="consulta-container">
+    <ion-card class="servicio-card">
+
+      <ion-card-header class="card-header">
+        <ion-card-title><strong>Descripción:</strong> {{ servicio.descripcion }}</ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        <p><strong>Estado del servicio:</strong> {{ servicio.estadoServicio }}</p>
+        <p><strong>Solicitante:</strong> {{ servicio.nombreSolicitante }} ({{ servicio.identificacionSolicitante }})</p>
+        <p><strong>Tipo de Servicio:</strong> {{ servicio.nombreTipoServicio }}</p>
+        <p><strong>Destinatario:</strong> {{ servicio.nombreDestinario }} ({{ servicio.identificaionDestinario }})</p>
+        <p><strong>Costo Inicial:</strong> {{ servicio.costoInicialSolicitante | currency:servicio.monedaNombre }}</p>
+        <p><strong>Fecha de creación:</strong> {{ servicio.fechaCreacion | date:'medium' }}</p>
+
+        <div class="map-buttons">
+          <ion-button *ngIf="coultarBotonServicioTranscurso(servicio)" expand="block" fill="solid" color="success" class="map-button-light" (click)="verRecorridoSolicitante(servicio)">
+            Ver Trayecto
+          </ion-button>
+          <ion-button expand="block" fill="solid" color="tertiary" class="map-button-light" (click)="verPaquetes(servicio)">
+            Ver paquetes asociados
+          </ion-button>
+          <ion-button *ngIf=" !coultarBotonServicioFinalizado(servicio)" expand="block" fill="solid" color="tertiary" class="map-button-light" (click)="verOfertas(servicio)">
+            Ver ofertas
+          </ion-button>
+          <ion-button *ngIf="coultarBotonServicioTranscurso(servicio)" expand="block" fill="solid" color="warning" class="map-button-light" (click)="actualizarServicio(servicio)">
+            Actualizar
+          </ion-button>
+          <ion-button *ngIf="coultarBotonServicioTranscursoPrestador(servicio)" expand="block" fill="solid" color="warning" class="map-button-light" (click)="verRecorrido(servicio)">
+            Iniciar servicio sin ofertar
+          </ion-button>
+          <ion-button *ngIf="validarEliminacionLogica(servicio)" expand="block" fill="solid" color="warning" class="map-button-light" (click)="elimincacionServicioLogico(servicio)">
+            Eliminar
+          </ion-button>
+        </div>
+      </ion-card-content>
+
+    </ion-card>
+  </ion-list>
+
+  <div class="consulta-container paginacion-bloque" *ngIf="totalPaginas > 1">
+    <ion-grid>
+      <ion-row class="ion-align-items-center ion-justify-content-between">
+        <ion-col size="4" class="ion-text-start">
+          <ion-button expand="block" fill="outline" class="map-button-light"
+                      (click)="anteriorPagina()" [disabled]="paginaActual === 0">
+            Anterior
+          </ion-button>
+        </ion-col>
+
+        <ion-col size="4" class="ion-text-center">
+          <p class="pagina-indicador">Página {{ paginaActual + 1 }} de {{ totalPaginas }}</p>
+        </ion-col>
+
+        <ion-col size="4" class="ion-text-end">
+          <ion-button expand="block" fill="outline"
+                      (click)="siguientePagina()" [disabled]="paginaActual + 1 >= totalPaginas">
+            Siguiente
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+</ion-content>

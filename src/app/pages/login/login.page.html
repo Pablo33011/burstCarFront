@@ -1,9 +1,60 @@
 <ion-content class="login-background">
+  <div class="login-decor">
+    <img src="../../../assets/img/undraw_vintage_q09n.svg" alt="auto decorativo" />
+  </div>
+
   <div class="login-container">
     <h2>Login</h2>
-    <ion-input placeholder="Usuario" fill="outline" class="login-input"></ion-input>
-    <ion-input placeholder="Contraseña" type="password" fill="outline" class="login-input"></ion-input>
-    <p class="redirect-text" (click)="goToRegister()">¿Desea crear una cuenta nueva?</p>
-    <ion-button expand="block" color="dark" class="login-button">Iniciar</ion-button>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <ion-input
+        placeholder="Usuario"
+        fill="outline"
+        class="login-input"
+        formControlName="usuario"
+      ></ion-input>
+
+      <ion-input
+        placeholder="Contraseña"
+        type="password"
+        fill="outline"
+        class="login-input"
+        formControlName="contrasena"
+      ></ion-input>
+
+      <ion-select
+        interface="action-sheet"
+        placeholder="Tipo de usuario"
+        class="login-input"
+        formControlName="tipoUsuario"
+      >
+        <ion-select-option value="solicitante">Solicitante de servicio</ion-select-option>
+        <ion-select-option value="prestador">Prestador de servicio</ion-select-option>
+      </ion-select>
+
+      <ion-text color="danger" *ngIf="errorMessage">
+        <p>{{ errorMessage }}</p>
+      </ion-text>
+
+      <ion-button
+        expand="block"
+        color="dark"
+        class="login-button"
+        type="submit">
+        Iniciar
+      </ion-button>
+
+      <ion-button
+        expand="block"
+        color="danger"
+        (click)="logout()"
+      >
+        Cerrar sesión
+      </ion-button>
+    </form>
+
+    <p class="redirect-text" (click)="registrarse()">
+      ¿Desea crear una cuenta nueva?
+    </p>
   </div>
 </ion-content>

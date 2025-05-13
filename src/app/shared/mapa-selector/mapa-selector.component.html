@@ -1,0 +1,7 @@
+  <ion-item *ngIf="!soloLectura">
+    <ion-label position="stacked">Buscar dirección</ion-label>
+    <ion-input [(ngModel)]="busqueda" (ionChange)="buscarDireccion()"></ion-input>
+  </ion-item>
+  
+  <div #mapa id="mapa" style="width: 100%; height: 300px;"></div>
+  

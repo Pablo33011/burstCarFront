@@ -1,0 +1,195 @@
+<ion-header class="custom-header">
+  <ion-toolbar color="primary">
+    <ion-title class="custom-header-title">Registrar nuevo servicio</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="consulta-background">
+  <div class="consulta-container">
+    <ion-button expand="block" fill="solid" color="success" class="map-button-dark" (click)="regresar()">
+      regresar
+    </ion-button>
+  </div>
+  <form [formGroup]="servicioForm" (ngSubmit)="registrar()">
+    <ion-card class="servicio-card consulta-container">
+      <ion-card-content>
+
+        <div *ngIf="pasoActual === 1">
+          <ion-item>
+            <ion-label position="stacked">Descripción</ion-label>
+            <ion-input formControlName="descripcion"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="stacked">Identificación del solicitante</ion-label>
+            <ion-input formControlName="identificaionSolicitante" readonly="true"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="stacked">Tipo de servicio</ion-label>
+            <ion-input formControlName="tipoServicio"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="stacked">Costo inicial</ion-label>
+            <ion-input type="number" formControlName="costoInicial"></ion-input>
+          </ion-item>
+
+          <ion-select formControlName="moneda" interface="popover" placeholder="Seleccione una moneda">
+            <ion-select-option value="COP">COP - Peso colombiano</ion-select-option>
+          </ion-select>
+        </div>
+
+        <div *ngIf="pasoActual === 2">
+          <h3>Ubicación de origen</h3>
+          <ng-container *ngIf="servicioForm.get('UbicacionOrigenServicio')" [formGroup]="servicioForm.get('UbicacionOrigenServicio')">
+            <ion-item>
+              <ion-label position="stacked">Número de vía</ion-label>
+              <ion-input formControlName="numeroVia"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="stacked">Dirección</ion-label>
+              <ion-input formControlName="direccion"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="stacked">Latitud</ion-label>
+              <ion-input type="number" formControlName="latitud"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="stacked">Longitud</ion-label>
+              <ion-input type="number" formControlName="longitud"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="stacked">Detalle adicional</ion-label>
+              <ion-input formControlName="detalleAdicional"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="stacked">País</ion-label>
+              <ion-input formControlName="nombrePais"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="stacked">Departamento</ion-label>
+              <ion-input formControlName="nombreDepartamento"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="stacked">Ciudad</ion-label>
+              <ion-input formControlName="nombreCiudad"></ion-input>
+            </ion-item>
+            
+            <ion-item>
+              <ion-select formControlName="nombreCorregimiento" interface="popover" placeholder="Nombre del corregimiento">
+                <ion-select-option value="Santa Bárbara">Santa Bárbara</ion-select-option>
+                <ion-select-option value="El Tablazo">El Tablazo</ion-select-option>
+                <ion-select-option value="Barro Blanco">Barro Blanco</ion-select-option>
+                <ion-select-option value="La Laja">La Laja</ion-select-option>
+                <ion-select-option value="Abreo">Abreo</ion-select-option>
+                <ion-select-option value="Yarumal">Yarumal</ion-select-option>
+                <ion-select-option value="Chachafruto">Chachafruto</ion-select-option>
+                <ion-select-option value="El Capiro">El Capiro</ion-select-option>
+                <ion-select-option value="San Antonio">San Antonio</ion-select-option>
+                <ion-select-option value="La Playa">La Playa</ion-select-option>
+                </ion-select>
+            </ion-item>
+            
+            <ion-item>
+              <ion-label position="stacked">Nombre de la vía</ion-label>
+              <ion-input formControlName="nombreVia"></ion-input>
+            </ion-item>
+            <app-mapa-selector
+              #mapaOrigen
+              [formGroup]="servicioForm.get('UbicacionOrigenServicio')">
+            </app-mapa-selector>
+          </ng-container>
+        </div>
+
+        <div *ngIf="pasoActual === 3">
+          <h3>Datos del destinatario</h3>
+          <ng-container *ngIf="servicioForm.get('destinatario')" [formGroup]="servicioForm.get('destinatario')">
+            <ion-item>
+              <ion-label position="stacked">Nombre</ion-label>
+              <ion-input formControlName="nombreDestinatario"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="stacked">Identificación</ion-label>
+              <ion-input formControlName="numeroIdentificacion"></ion-input>
+            </ion-item>
+          </ng-container>
+        </div>
+
+        <div *ngIf="pasoActual === 4">
+          <h3>Ubicación del destinatario</h3>
+          <ng-container *ngIf="servicioForm.get('destinoUbicacion')" [formGroup]="servicioForm.get('destinoUbicacion')">
+            <ion-item>
+              <ion-label position="stacked">Número de vía</ion-label>
+              <ion-input formControlName="numeroVia"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="stacked">Dirección</ion-label>
+              <ion-input formControlName="direccion"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="stacked">Latitud</ion-label>
+              <ion-input type="number" formControlName="latitud"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="stacked">Longitud</ion-label>
+              <ion-input type="number" formControlName="longitud"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="stacked">Detalle adicional</ion-label>
+              <ion-input formControlName="detalleAdicional"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="stacked">País</ion-label>
+              <ion-input formControlName="nombrePais"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="stacked">Departamento</ion-label>
+              <ion-input formControlName="nombreDepartamento"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="stacked">Ciudad</ion-label>
+              <ion-input formControlName="nombreCiudad"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="stacked">Corregimiento</ion-label>
+              <ion-input formControlName="nombreCorregimiento"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="stacked">Nombre de la vía</ion-label>
+              <ion-input formControlName="nombreVia"></ion-input>
+            </ion-item>
+             <app-mapa-selector
+              #mapaDestino
+              [formGroup]="servicioForm.get('destinoUbicacion')">
+            </app-mapa-selector>           
+          </ng-container>
+        </div>
+
+        <ion-grid class="paginacion-bloque">
+          <ion-row class="ion-align-items-center ion-justify-content-between">
+            <ion-col size="4" class="ion-text-start">
+              <ion-button fill="outline" [disabled]="pasoActual === 1" (click)="anteriorPaso()">
+                Anterior
+              </ion-button>
+            </ion-col>
+
+            <ion-col size="4" class="ion-text-center">
+              <p class="pagina-indicador">Paso {{ pasoActual }} de 4</p>
+            </ion-col>
+
+            <ion-col size="4" class="ion-text-end">
+              <ion-button fill="outline" *ngIf="pasoActual < 4" (click)="siguientePaso()">
+                Siguiente
+              </ion-button>
+              <ion-button color="success" expand="block" type="submit" *ngIf="pasoActual === 4">
+                Registrar servicio
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+      </ion-card-content>
+    </ion-card>
+  </form>
+</ion-content>

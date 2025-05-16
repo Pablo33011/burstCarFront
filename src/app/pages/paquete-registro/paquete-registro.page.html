@@ -50,8 +50,12 @@
         </ion-item>
 
         <ion-item>
-          <ion-label position="stacked">Tipo de paquete</ion-label>
-          <ion-input formControlName="tipoPaqueteNombre"></ion-input>
+          <ion-select formControlName="tipoPaqueteNombre" interface="popover" placeholder="Tipo de paquete">
+            <ion-select-option value="Familiar">Familiar</ion-select-option>
+            <ion-select-option value="Pesado">Pesado</ion-select-option>
+            <ion-select-option value="Delicado">Delicado</ion-select-option>
+            <ion-select-option value="Mercado">Mercado</ion-select-option>
+          </ion-select>
         </ion-item>
 
         <ion-button expand="block" type="submit" [disabled]="paqueteForm.invalid" class="map-button-dark">

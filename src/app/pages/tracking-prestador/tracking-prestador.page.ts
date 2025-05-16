@@ -108,6 +108,7 @@ export class TrackingPrestadorPage implements OnInit {
         this.verificarCercanias();
       }
     });
+    this.cambiarEstadoServicioEnOrigen();
   }
 
   async finalizarRecorrido() {

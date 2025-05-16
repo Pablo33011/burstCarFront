@@ -37,7 +37,7 @@
           <ion-button expand="block" fill="solid" color="tertiary" class="map-button-light" (click)="verPaquetes(servicio)">
             Ver paquetes asociados
           </ion-button>
-          <ion-button *ngIf=" !coultarBotonServicioFinalizado(servicio)" expand="block" fill="solid" color="tertiary" class="map-button-light" (click)="verOfertas(servicio)">
+          <ion-button *ngIf=" !coultarBotonServicioFinalizado(servicio) && !validarEstadoBorrador(servicio)" expand="block" fill="solid" color="tertiary" class="map-button-light" (click)="verOfertas(servicio)">
             Ver ofertas
           </ion-button>
           <ion-button *ngIf="coultarBotonServicioTranscurso(servicio)" expand="block" fill="solid" color="warning" class="map-button-light" (click)="actualizarServicio(servicio)">

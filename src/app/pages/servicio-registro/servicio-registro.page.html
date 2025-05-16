@@ -26,8 +26,13 @@
           </ion-item>
 
           <ion-item>
-            <ion-label position="stacked">Tipo de servicio</ion-label>
-            <ion-input formControlName="tipoServicio"></ion-input>
+            <ion-select formControlName="tipoServicio" interface="popover" placeholder="Tipo de servicio">
+              <ion-select-option value="Familiar">Familiar</ion-select-option>
+              <ion-select-option value="Empresarial">Empresarial</ion-select-option>
+              <ion-select-option value="Urgente">Urgente</ion-select-option>
+              <ion-select-option value="Especial">Especial</ion-select-option>
+              <ion-select-option value="Mercado">Mercado</ion-select-option>
+            </ion-select>
           </ion-item>
 
           <ion-item>

@@ -31,7 +31,9 @@
           <p><strong>Fecha fin:</strong> {{ oferta.fechaFin | date:'short' }}</p>
 
           <div class="map-buttons">
-            <ion-button expand="block" fill="solid" color="tertiary" class="map-button-light" (click)="verPrestador(oferta)">
+            <ion-button expand="block" fill="solid" color="tertiary" class="map-button-light" 
+            *ngIf="rolUsuario === 'solicitante'"
+            (click)="verPrestador(oferta)">
               Ver prestador
             </ion-button>
 

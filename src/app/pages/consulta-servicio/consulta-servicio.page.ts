@@ -20,7 +20,7 @@ export class ConsultaServicioPage{
   identificacionUsuario: string = '';
   estadoServicioTrancurso: string = 'En transcurso';
   estadoServicioNuevo: string = 'Nuevo';
-  estadoServicioBorrador: string = 'En Borrador';
+  estadoServicioBorrador: string = 'En borrador';
   estadoServicioFinalizado: string = 'Finalizado';
   latitud!: number;
   longitud!: number;
@@ -253,5 +253,9 @@ cargarServicios() {
       return this.rolUsuario === 'solicitante' &&
       (servicio.estadoServicio === this.estadoServicioNuevo ||
        servicio.estadoServicio === this.estadoServicioBorrador);   
+    }
+
+    validarEstadoBorrador(servicio: any): boolean{
+      return servicio.estadoServicio === this.estadoServicioBorrador;    
     }
 }

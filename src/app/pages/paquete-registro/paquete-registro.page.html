@@ -15,52 +15,74 @@
     <ion-card class="servicio-card consulta-container">
       <ion-card-content>
 
-        <ion-item>
-          <ion-label position="stacked">Descripción del contenido</ion-label>
-          <ion-input formControlName="descripcionContenido"></ion-input>
-        </ion-item>
+        <div *ngIf="pasoActual === 1">
+          <ion-item>
+            <ion-label position="stacked">Descripción del contenido</ion-label>
+            <ion-input formControlName="descripcionContenido"></ion-input>
+          </ion-item>
 
-        <ion-item>
-          <ion-label position="stacked">¿Es frágil?</ion-label>
-          <ion-toggle formControlName="fragil"></ion-toggle>
-        </ion-item>
+          <ion-item>
+            <ion-label position="stacked">¿Es frágil?</ion-label>
+           <ion-toggle formControlName="fragil"></ion-toggle>
+          </ion-item>
 
-        <ion-item>
-          <ion-label position="stacked">Valor aproximado</ion-label>
-          <ion-input type="number" formControlName="valorAproximado"></ion-input>
-        </ion-item>
+         <ion-item>
+            <ion-label position="stacked">Valor aproximado</ion-label>
+            <ion-input type="number" formControlName="valorAproximado"></ion-input>
+          </ion-item>
 
-        <ion-select formControlName="monedaPaquete" interface="popover" placeholder="Seleccione una moneda">
-          <ion-select-option value="COP">COP - Peso colombiano</ion-select-option>
-        </ion-select>  
+          <ion-select formControlName="monedaPaquete" interface="popover" placeholder="Seleccione una moneda">
+            <ion-select-option value="COP">COP - Peso colombiano</ion-select-option>
+         </ion-select>  
 
-        <ion-item>
-          <ion-label position="stacked">Peso</ion-label>
-          <ion-input type="number" formControlName="valorPeso"></ion-input>
-        </ion-item>
+          <ion-item>
+            <ion-label position="stacked">Peso</ion-label>
+           <ion-input type="number" formControlName="valorPeso"></ion-input>
+          </ion-item>
 
 
-        <ion-select formControlName="nombreMedida" interface="action-sheet" placeholder="Medida (ej: Kilogramo)" class="login-input">
-          <ion-select-option value="kg">Kilogramo</ion-select-option>
-        </ion-select>
-
-        <ion-item>
-          <ion-label position="stacked">Descripción del paquete</ion-label>
-          <ion-input formControlName="descripcionPaquete"></ion-input>
-        </ion-item>
-
-        <ion-item>
-          <ion-select formControlName="tipoPaqueteNombre" interface="popover" placeholder="Tipo de paquete">
-            <ion-select-option value="Familiar">Familiar</ion-select-option>
-            <ion-select-option value="Pesado">Pesado</ion-select-option>
-            <ion-select-option value="Delicado">Delicado</ion-select-option>
-            <ion-select-option value="Mercado">Mercado</ion-select-option>
+          <ion-select formControlName="nombreMedida" interface="action-sheet" placeholder="Medida (ej: Kilogramo)" class="login-input">
+            <ion-select-option value="kg">Kilogramo</ion-select-option>
           </ion-select>
-        </ion-item>
+        </div> 
+        <div *ngIf="pasoActual === 2">
+          <ion-item>
+            <ion-label position="stacked">Descripción del paquete</ion-label>
+            <ion-input formControlName="descripcionPaquete"></ion-input>
+          </ion-item>
 
-        <ion-button expand="block" type="submit" [disabled]="paqueteForm.invalid" class="map-button-dark">
-          Registrar paquete
-        </ion-button>
+          <ion-item>
+            <ion-select formControlName="tipoPaqueteNombre" interface="popover" placeholder="Tipo de paquete">
+             <ion-select-option value="Familiar">Familiar</ion-select-option>
+             <ion-select-option value="Pesado">Pesado</ion-select-option>
+             <ion-select-option value="Delicado">Delicado</ion-select-option>
+             <ion-select-option value="Mercado">Mercado</ion-select-option>
+            </ion-select>
+         </ion-item>
+         </div>
+
+         <ion-grid class="paginacion-bloque">
+            <ion-row class="ion-align-items-center ion-justify-content-between">
+              <ion-col size="4" class="ion-text-start">
+                <ion-button fill="outline" [disabled]="pasoActual === 1" (click)="anteriorPaso()">
+                  Anterior
+                </ion-button>
+              </ion-col>
+
+             <ion-col size="4" class="ion-text-center">
+                <p class="pagina-indicador">Paso {{ pasoActual }} de 2</p>
+              </ion-col>
+
+             <ion-col size="4" class="ion-text-end">
+                <ion-button fill="outline" *ngIf="pasoActual < 2" (click)="siguientePaso()">
+                  Siguiente
+                </ion-button>
+                <ion-button expand="block" type="submit" [disabled]="paqueteForm.invalid" class="map-button-dark" *ngIf="pasoActual === 2">
+                 Registrar paquete
+                </ion-button>
+             </ion-col>
+           </ion-row>
+          </ion-grid>
 
       </ion-card-content>
     </ion-card>

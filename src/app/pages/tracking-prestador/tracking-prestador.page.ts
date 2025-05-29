@@ -6,6 +6,7 @@ import { MapaSelectorComponent } from 'src/app/shared/mapa-selector/mapa-selecto
 import { FirebaseTrackingServicio } from 'src/app/shared/tracking/firebase-tracking.servicio';
 import { EstadoServicio } from './servicio-actualizar-estado.servicio';
 import { AlertaServicio } from 'src/app/services/alertas-errores.servicio';
+import { rutaSimulada } from './ruta.simulacion';
 
 @Component({
   selector: 'app-tracking-prestador',
@@ -25,6 +26,7 @@ export class TrackingPrestadorPage implements OnInit {
   puedeFinalizarRecorrido = false;
   puedeCambiarEstadoEnOrigen = false;
   intervalSimulacion: any; //Variable para pruebas
+  rutaSimulada = rutaSimulada; //Variable para pruebas
 
   @ViewChild(MapaSelectorComponent) mapaSelector!: MapaSelectorComponent;
 
@@ -120,7 +122,14 @@ export class TrackingPrestadorPage implements OnInit {
       Geolocation.clearWatch({ id: this.watchId });
       await this.firebaseTracking.eliminarTracking(this.servicioId);
     }
+    this.cambiarEstadoAlFinalizar();
+  }
 
+  private cambiarEstadoAlFinalizar(){
+    if (!this.puedeFinalizarRecorrido) {
+      this.alerta.mostrarError({ message: 'Debes estar en el punto de destino para finalizar el recorrido.' });
+      return;
+    }
     this.estadoServicio.actualizarEstadoServicio(this.servicioId, { estadoServicio: 'Finalizado' }).subscribe({
       next: () => {
         this.alerta.mostrarExito('El recorrido fue finalizado exitosamente');
@@ -135,7 +144,7 @@ export class TrackingPrestadorPage implements OnInit {
   }
 
   //Prueba movimiento 
-  simularMovimiento() {
+  /*simularMovimiento() {
     this.intervalSimulacion = setInterval(() => {
       const latActual = this.dummyForm.value.latitud;
       const lngActual = this.dummyForm.value.longitud;
@@ -149,7 +158,25 @@ export class TrackingPrestadorPage implements OnInit {
     }, 2000);
 
     this.alerta.mostrarMensaje('Simulación activada', 'Moviendo el marcador automáticamente.');
-  } 
+  } */
+    simularMovimiento(){
+      this.alerta.mostrarMensaje('Simulación activada', 'Moviendo el marcador automáticamente.');
+      this.cambiarEstadoServicioEnOrigen();
+      let index = 0;
+      this.intervalSimulacion = setInterval(() => {
+        if (index >= this.rutaSimulada.length) {
+          clearInterval(this.intervalSimulacion);
+          this.alerta.mostrarMensaje('Simulación finalizada', 'El marcador llegó al destino.');
+          this.cambiarEstadoAlFinalizar();
+          return;
+        }
+        const punto = this.rutaSimulada[index];
+        this.dummyForm.patchValue({ latitud: punto.lat, longitud: punto.lng });
+        this.firebaseTracking.actualizarUbicacion(this.servicioId, punto.lat, punto.lng);
+        this.mapaSelector.moverMarcador(punto.lat, punto.lng);
+        index++;
+      }, 2000);
+    }
 
   cambiarEstadoServicioEnOrigen() {
     const esatdo = { estadoServicio: 'En transcurso' };

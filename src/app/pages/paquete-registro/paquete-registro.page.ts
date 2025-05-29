@@ -13,6 +13,7 @@ export class PaqueteRegistroPage implements OnInit{
   paqueteForm: FormGroup;
   idServicio: string = '';
   cargando = false;
+  pasoActual: number = 1;
 
   constructor(
     private fb: FormBuilder,
@@ -95,5 +96,17 @@ export class PaqueteRegistroPage implements OnInit{
     .then(() => {
     window.location.reload();
   });
+  }
+
+    siguientePaso() {
+    if (this.pasoActual < 2) {
+      this.pasoActual++;
+    }
+  }
+  
+  anteriorPaso() {
+    if (this.pasoActual > 1) {
+      this.pasoActual--;
+    }
   }
 }

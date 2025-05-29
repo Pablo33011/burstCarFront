@@ -1,0 +1,9 @@
+{
+  "appId": "co.edu.uco.burstcar.frontend",
+  "appName": "burstcar-app",
+  "webDir": "www",
+  "server": {
+    "androidScheme": "http",
+    "cleartext": true
+  }
+}

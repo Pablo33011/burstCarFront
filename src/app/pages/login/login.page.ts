@@ -39,10 +39,10 @@ export class LoginPage {
       const { lat, lng } = await this.obtenerLocalizacionActual();
       //Se le debe poner la negación a esta validación para que el 
       // aplicativo no funcione si está fuera de Rioengro.
-      if (!this.dentroDeRionegro(lat, lng)) {
-        this.alerta.mostrarError({ message: 'Debes estar dentro de Rionegro para iniciar sesión.' });
-        return false;
-      }
+      //if (!this.dentroDeRionegro(lat, lng)) {
+      //  this.alerta.mostrarError({ message: 'Debes estar dentro de Rionegro para iniciar sesión.' });
+      //  return false;
+      //}
       return true;
     } catch {
       this.alerta.mostrarError({ message: 'No se pudo obtener tu ubicación. Activa el GPS.' });
